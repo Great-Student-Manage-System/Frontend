@@ -1,70 +1,48 @@
-# Getting Started with Create React App
+# Grea+ Front-End
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 구현 요구 사항
 
-## Available Scripts
+### 1. Auth
 
-In the project directory, you can run:
+- **회원 가입**
+  - [ ] SNS 로그인을 구현합니다.
+  - [ ] 홈페이지 가입을 구현합니다.
+    - 홈페이지 가입은 다음과 같은 조건을 만족합니다.
+    - [ ] 이름(닉네임)은 중복 확인을 해야합니다.
+    - [ ] 비밀번호 조건을 만족해야 합니다. → regExp를 통해 적용
+    - [ ] 인증메일 발송과 인증 후 절차가 이루어져야 합니다.
+  ***
+  위 3가지 조건 중 한개라도 false가 되는 순간에 과목 칸은 사라집니다. SNS의 경우 인증이 완료되면 과목칸이 생성됩니다.
+  - [ ] 과목 선택칸이 생성됩니다.
+- **로그인**
+  - [ ] 로그인 실패시 아이디와 비밀번호 input이 초기화 됩니다.
+  - [ ] 로그인 성공시 토큰을 발행합니다.
 
-### `npm start`
+### Main Page
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- 네비게이션 Bar
+  - [ ] 학생 관리기능과 시험 페이지로 이동
+- 학생 관리 기능
+  - [ ] 신규 학생 추가가 가능합니다.
+  - [ ] 현재 학생 삭제가 가능합니다. (삭제는 table에 있는 column에 삭제 버튼을 사용합니다.)
+  - [ ] 표에는 이름, 학년, 선택과목, 학생 삭제 기능이 표시됩니다.
+  - [ ] 학생 이름 검색이 가능합니다.
+- 학생 성적 관리 기능
+  - [ ] 학생 기본 인적사항이 나타납니다. (입력 받은 값들만)
+  - [ ] 학생 성적이 그래프로 표시됩니다.
+    - 전국 모의고사
+  - [ ] 학생 성적 입력 가능 → 학생 이름, 과목, 시험 선택
+  - [ ] 모의고사 그래프에 나타나는 정보는 exam table에 있는 정보
+- 시험 목록 기능
+  - [ ] DB에 등록되어 있는 시험 목록이 table로 주어집니다.
+- 성적 페이지 → 모의고사 기준으로 학생들의 성적이 나타나는 페이지
+  - [ ] 모의고사 기준 성적 그래프가 나타남.
+  - [ ] 해당 시험을 본 학생들 성적이 나타남.
+  - [ ] 학생 이름 구현이 가능하다.
+- 마이페이지
+  - [ ] 닉네임 변경
+  - [ ] 비밀번호 변경
+- 구현 컴포넌트
+  - [ ] 모달창 구현
+  - [ ] 그래프 구현
+  - [ ] 테이블 구현
