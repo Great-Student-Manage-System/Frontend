@@ -1,7 +1,7 @@
-import Header from "components/Header";
+import Header from "@components/Header";
 import React from "react";
 
-export default function Students() {
+export default function Exams() {
   return (
     <div>
       <Header />

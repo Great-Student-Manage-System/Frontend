@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { VscAccount } from "react-icons/vsc";
+import { useLocation } from "react-router-dom";
 
 const Base = styled.div`
   width: 100%;
@@ -63,7 +64,11 @@ const Sign = styled.button`
 `;
 
 function Header() {
-  return (
+  const location = useLocation();
+
+  console.log();
+
+  return location.pathname.includes("auth") ? null : (
     <>
       <Base>
         <List>
