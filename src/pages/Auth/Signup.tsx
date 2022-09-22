@@ -3,6 +3,8 @@ import Header from "@components/Auth/Header";
 import React, { useState } from "react";
 import styled from "styled-components";
 import InputBox from "@components/Auth/InputBox";
+import { useRecoilValue } from "recoil";
+import { signUpConditionAtom, signUpConditionProps } from "@recoil/atom";
 
 const SignUpForm = styled.form`
   display: grid;
@@ -31,6 +33,9 @@ export default function Signup() {
   const [password, setPassword] = useState<string>("");
   const [rePassword, setRePassword] = useState<string>("");
   const [nickName, setNickName] = useState<string>("");
+
+  const signUpCondition =
+    useRecoilValue<signUpConditionProps>(signUpConditionAtom);
 
   const emailConfirmProperty = {
     buttonTitle: "인증하기",
@@ -92,7 +97,17 @@ export default function Signup() {
           <option></option>
         </select>
 
-        <button type="submit">동의하고 회원가입하기</button>
+        <button
+          type="submit"
+          disabled={
+            !signUpCondition.email ||
+            !signUpCondition.nickName ||
+            !signUpCondition.password ||
+            !signUpCondition.subject
+          }
+        >
+          동의하고 회원가입하기
+        </button>
       </SignUpForm>
     </Layout>
   );
