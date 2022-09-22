@@ -1,17 +1,20 @@
+import { ButtonProperty, ChangeValue } from "@pages/Auth/Signup";
 import styled from "styled-components";
+import ConfirmButton from "@components/Auth/ConfirmButton";
+import { useState } from "react";
 
 const InputBoxContainer = styled.div`
   margin: 0 auto;
+  width: inherit;
 `;
 
 const InputContainer = styled.div`
-  width: 376px;
   display: flex;
   align-items: center;
 `;
 
 const Input = styled.input`
-  max-width: 376px;
+  max-width: var(--auth-content-width);
   min-width: 296px;
   height: 42px;
   width: 100%;
@@ -21,25 +24,44 @@ const TitleLabel = styled.label`
   display: block;
 `;
 
-const ConfirmButton = styled.button`
-  width: 7.2rem;
-  height: 4.2rem;
-  margin-left: 0.8rem;
-`;
-
 interface InputProps {
   title?: string;
+  value: string;
+  changeHandler: ({ e, fnc }: ChangeValue) => void;
+  fnc: React.Dispatch<React.SetStateAction<string>>;
   placeholder?: string;
-  isButton: boolean;
+  buttonProperty?: ButtonProperty;
 }
 
-function InputBox({ title, placeholder, isButton }: InputProps) {
+function InputBox({
+  title,
+  placeholder,
+  buttonProperty,
+  changeHandler,
+  fnc,
+  value,
+}: InputProps) {
+  const [isValidation, setIsValidation] = useState<boolean>(false);
   return (
     <InputBoxContainer>
       {title ? <TitleLabel>{title}</TitleLabel> : null}
       <InputContainer>
-        <Input placeholder={placeholder} />
-        {isButton ? <ConfirmButton>버튼</ConfirmButton> : null}
+        <Input
+          value={value}
+          placeholder={placeholder}
+          onChange={(e) => {
+            changeHandler({ e, fnc });
+            console.log(e.currentTarget.value);
+            setIsValidation(e.currentTarget.value.length > 8);
+          }}
+        />
+        {buttonProperty ? (
+          <ConfirmButton
+            buttonTitle={buttonProperty.buttonTitle}
+            buttonHandler={buttonProperty.buttonHandler}
+            isValidation={isValidation}
+          ></ConfirmButton>
+        ) : null}
       </InputContainer>
     </InputBoxContainer>
   );
