@@ -6,12 +6,6 @@ import InputBox from "@components/Auth/InputBox";
 import { useRecoilValue } from "recoil";
 import { signUpConditionAtom, signUpConditionProps } from "@recoil/atom";
 
-const SignUpForm = styled.form`
-  display: grid;
-  width: var(--auth-content-width);
-  margin: 0 auto;
-`;
-
 export interface ButtonProperty {
   buttonTitle: string;
   buttonHandler: (e: React.MouseEvent) => void;
@@ -30,9 +24,12 @@ export const inputChangeHandler = ({ e, fnc }: ChangeValue): void => {
 
 export default function Signup() {
   const [email, setEmail] = useState<string>("");
+  const [emailConfirm, setEmailConfirm] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [rePassword, setRePassword] = useState<string>("");
   const [nickName, setNickName] = useState<string>("");
+
+  const [isEmailConfirm, setIsEmailConfirm] = useState<boolean>(false);
 
   const signUpCondition =
     useRecoilValue<signUpConditionProps>(signUpConditionAtom);
@@ -64,29 +61,39 @@ export default function Signup() {
         <InputBox
           changeHandler={inputChangeHandler}
           value={email}
-          fnc={setEmail}
+          changeFunction={setEmail}
           title="이메일"
           placeholder="이메일을 입력해주세요"
           buttonProperty={emailConfirmProperty}
         />
+        {isEmailConfirm ? (
+          <InputBox
+            changeHandler={inputChangeHandler}
+            value={emailConfirm}
+            changeFunction={setEmailConfirm}
+            title="인증코드"
+            placeholder="인증코드를 입력해주세요"
+            buttonProperty={emailConfirmProperty}
+          />
+        ) : null}
         <InputBox
           changeHandler={inputChangeHandler}
           value={password}
-          fnc={setPassword}
+          changeFunction={setPassword}
           title="비밀번호"
           placeholder="비밀번호를 입력해주세요"
         />
         <InputBox
           changeHandler={inputChangeHandler}
           value={rePassword}
-          fnc={setRePassword}
+          changeFunction={setRePassword}
           title="비밀번호 확인"
           placeholder="비밀번호를 입력해주세요"
         />
         <InputBox
           changeHandler={inputChangeHandler}
           value={nickName}
-          fnc={setNickName}
+          changeFunction={setNickName}
           title="닉네임"
           placeholder="닉네임을 입력해주세요"
           buttonProperty={nickNameConfirmProperty}
@@ -108,7 +115,28 @@ export default function Signup() {
         >
           동의하고 회원가입하기
         </button>
+        <InfoSpan>
+          <a>이용약관</a>과 <a>개인정보 수집이용</a>에 동의하며, 만 14세
+          이상입니다.
+        </InfoSpan>
       </SignUpForm>
     </Layout>
   );
 }
+
+const SignUpForm = styled.form`
+  display: grid;
+  width: var(--auth-content-width);
+  margin: 0 auto;
+`;
+
+const InfoSpan = styled.span`
+  font-size: 1.2rem;
+  a {
+    font-weight: bold;
+    text-decoration: underline;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+`;

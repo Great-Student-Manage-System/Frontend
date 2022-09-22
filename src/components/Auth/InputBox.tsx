@@ -28,7 +28,7 @@ interface InputProps {
   title?: string;
   value: string;
   changeHandler: ({ e, fnc }: ChangeValue) => void;
-  fnc: React.Dispatch<React.SetStateAction<string>>;
+  changeFunction: React.Dispatch<React.SetStateAction<string>>;
   placeholder?: string;
   buttonProperty?: ButtonProperty;
 }
@@ -38,7 +38,7 @@ function InputBox({
   placeholder,
   buttonProperty,
   changeHandler,
-  fnc,
+  changeFunction,
   value,
 }: InputProps) {
   const [isValidation, setIsValidation] = useState<boolean>(false);
@@ -50,8 +50,7 @@ function InputBox({
           value={value}
           placeholder={placeholder}
           onChange={(e) => {
-            changeHandler({ e, fnc });
-            console.log(e.currentTarget.value);
+            changeHandler({ e, fnc: changeFunction });
             setIsValidation(e.currentTarget.value.length > 8);
           }}
         />
