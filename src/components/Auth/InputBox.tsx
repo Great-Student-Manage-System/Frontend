@@ -22,9 +22,9 @@ const TitleLabel = styled.label`
 `;
 
 const ConfirmButton = styled.button`
-  width: 72px;
-  height: 42px;
-  margin-left: 8px;
+  width: 7.2rem;
+  height: 4.2rem;
+  margin-left: 0.8rem;
 `;
 
 interface InputProps {

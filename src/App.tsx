@@ -1,6 +1,6 @@
 import React from "react";
 import URLRoutes from "@pages/Routes";
-import GlobalStyle from "style/GlobalStyle";
+import GlobalStyle from "@style/GlobalStyle";
 
 function App() {
   return (

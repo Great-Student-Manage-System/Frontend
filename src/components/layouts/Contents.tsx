@@ -4,7 +4,7 @@ const ContentsContainer = styled.div`
   display: grid;
   grid-template-columns: auto;
   width: 100%;
-  max-width: 1024px;
+  max-width: --var(--content-width);
   margin: 0 auto;
 `;
 
