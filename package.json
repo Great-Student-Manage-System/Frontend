@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^13.5.0",
     "@types/react-router-dom": "^5.3.3",
     "@vscode/codicons": "^0.0.32",
+    "dayjs": "^1.11.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.36.0",

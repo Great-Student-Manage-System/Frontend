@@ -12,6 +12,11 @@ import {
   passwordValidation,
   nickNameValidation,
 } from "@utility/validation";
+import { MAIN_SUBJECTS, DETAIL_SUBJECTS } from "@data/subjectData";
+import dayjs from "dayjs";
+import { useEffect } from "react";
+
+const CONFIRM_TIME = 300;
 
 export interface ConfirmButtonProps {
   buttonTitle: string;
@@ -58,8 +63,14 @@ export default function Signup() {
   const [passwordValue, setPasswordValue] = useState("");
   const [rePasswordValue, setRePasswordValue] = useState("");
   const [nickNameValue, setNickNameValue] = useState("");
+  const [mainSubject, setMainSubject] = useState(-1);
+  const [subjectValue, setSubjectValue] = useState<{ [key: string]: string }>(
+    {},
+  );
+  const [confirmTime, setConfirmTime] = useState(CONFIRM_TIME);
 
   const [isEmailValidate, setIsEmailValidate] = useState(false);
+  const [isEmailConfirmInput, setIsEmailConfirmInput] = useState(false);
   const [isPasswordValidate, setIsPasswordValidate] = useState(false);
   const [isRePasswordValidate, setIsRePasswordValidate] = useState(false);
   const [isNickNameValidate, setIsNickNameValidate] = useState(false);
@@ -68,6 +79,7 @@ export default function Signup() {
     buttonTitle: "인증하기",
     buttonHandler: (e: React.MouseEvent) => {
       e.preventDefault();
+      setIsEmailConfirmInput(isEmailValidate);
     },
   };
   const nickNameConfirmProperty = {
@@ -81,6 +93,16 @@ export default function Signup() {
     // 여기서 submit 처리
     console.log(data, formState);
   };
+
+  useEffect(() => {
+    if (isEmailConfirmInput && confirmTime > 0 && isEmailValidate) {
+      const timer = setInterval(() => {
+        setConfirmTime((cur) => --cur);
+      }, 1000);
+
+      return () => clearInterval(timer);
+    }
+  }, [confirmTime, isEmailConfirmInput, isEmailValidate]);
 
   return (
     <Layout>
@@ -116,18 +138,17 @@ export default function Signup() {
           </InputContainer>
         </InputBoxContainer>
 
-        {/* {isEmailConfirm ? (
-          <InputBoxContainer>
-            <InputContainer>
-              <TitleLabel>인증코드</TitleLabel>
-              <InputBox
-                inputType="email"
-                placeholder="인증코드를 입력해주세요"
-                register={register}
-              />
-            </InputContainer>
-          </InputBoxContainer>
-        ) : null} */}
+        {isEmailConfirmInput && isEmailValidate ? (
+          <>
+            <TitleLabel>인증코드</TitleLabel>
+            <InputBoxContainer>
+              <InputContainer>
+                <Input type="number" placeholder="인증코드를 입력해주세요" />
+                <div>{dayjs((confirmTime || 0) * 1000).format("mm:ss")}</div>
+              </InputContainer>
+            </InputBoxContainer>
+          </>
+        ) : null}
 
         <InputBoxContainer>
           <TitleLabel>비밀번호</TitleLabel>
@@ -166,7 +187,7 @@ export default function Signup() {
                   onChange: (e) => {
                     const { value } = e.target;
                     setRePasswordValue(value);
-                    setIsRePasswordValidate(passwordValidation(value));
+                    setIsRePasswordValidate(passwordValue === e.target.value);
                   },
                   value: rePasswordValue,
                   required: true,
@@ -210,9 +231,31 @@ export default function Signup() {
         <TitleLabel>담당 과목</TitleLabel>
         <InputBoxContainer>
           <InputContainer>
-            <select>
-              <option></option>
+            <select
+              onChange={(e) => setMainSubject(Number(e.target.value))}
+              required={true}
+            >
+              <option hidden={true}>과목을 선택해주세요</option>
+              <option value={MAIN_SUBJECTS.국어}>국어</option>
+              <option value={MAIN_SUBJECTS.수학}>수학</option>
+              <option value={MAIN_SUBJECTS.사회}>사회</option>
+              <option value={MAIN_SUBJECTS.과학}>과학</option>
             </select>
+            {mainSubject !== -1 ? (
+              <select
+                onChange={(e) =>
+                  setSubjectValue({
+                    [mainSubject]: e.target.value,
+                  })
+                }
+                required={true}
+              >
+                <option hidden={true}>상세과목을 선택해주세요</option>
+                {DETAIL_SUBJECTS[mainSubject as MAIN_SUBJECTS].map((detail) => (
+                  <option value={detail}>{detail}</option>
+                ))}
+              </select>
+            ) : null}
           </InputContainer>
         </InputBoxContainer>
 
@@ -221,7 +264,7 @@ export default function Signup() {
           // disabled={
           //   !signUpCondition.email ||
           //   !signUpCondition.nickName ||
-          //   !signUpCondition.password ||
+          //   !isPasswordValidate ||
           //   !signUpCondition.subject
           // }
         >
