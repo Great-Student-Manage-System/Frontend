@@ -1,4 +1,4 @@
-import { ButtonProperty } from "@pages/Auth/Signup";
+import { ConfirmButtonProps } from "@pages/Auth/Signup";
 import styled from "styled-components";
 
 const Button = styled.button`
@@ -12,7 +12,7 @@ function ConfirmButton({
   buttonTitle,
   buttonHandler,
   isValidation,
-}: ButtonProperty) {
+}: ConfirmButtonProps) {
   return (
     <Button onClick={buttonHandler} disabled={!isValidation}>
       {buttonTitle}

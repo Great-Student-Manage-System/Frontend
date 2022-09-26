@@ -11,5 +11,5 @@ export const passwordValidation = (password: string): boolean => {
 };
 
 export const nickNameValidation = (nickName: string): boolean => {
-  return false;
+  return true;
 };

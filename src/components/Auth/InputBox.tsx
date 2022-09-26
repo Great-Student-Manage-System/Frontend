@@ -1,16 +1,53 @@
-import { ButtonProperty, ChangeValue } from "@pages/Auth/Signup";
+import { inputValidateHandler } from "@pages/Auth/Signup";
 import styled from "styled-components";
-import ConfirmButton from "@components/Auth/ConfirmButton";
 import { useState } from "react";
+import {
+  emailValidation,
+  nickNameValidation,
+  passwordValidation,
+} from "@utility/validation";
 
-const InputBoxContainer = styled.div`
-  margin: 0 auto;
-  width: inherit;
-`;
+import { FieldValues, UseFormRegister } from "react-hook-form/dist/types";
 
-const InputContainer = styled.div`
-  display: flex;
-  align-items: center;
+type inputType = "email" | "password" | "nickName";
+
+interface InputProps {
+  placeholder?: string;
+  inputType: inputType;
+  register: UseFormRegister<FieldValues>;
+}
+
+const getValidation = (type: string) => {
+  if (type === "email") return emailValidation;
+  else if (type === "password") return passwordValidation;
+  else if (type === "nickName") return nickNameValidation;
+};
+
+function InputBox({ placeholder, inputType, register }: InputProps) {
+  const [isValidation, setIsValidation] = useState<boolean>(false);
+  return (
+    <InputWrap>
+      <Input
+        placeholder={placeholder}
+        // onChange={(e) => {
+        //   inputValidateHandler({
+        //     changeArguments: { e, fnc: setInputValue },
+        //     validation: getValidation(inputType),
+        //     setValidValue: setIsValidation,
+        //   });
+        // }}
+        type={inputType === "nickName" ? "text" : inputType}
+        {...(register(inputType), { validate: getValidation(inputType) })}
+      />
+      {isValidation ? null : <span>올바른 input을 입력하세요</span>}
+    </InputWrap>
+  );
+}
+
+export default InputBox;
+
+const InputWrap = styled.div`
+  width: 100%;
 `;
 
 const Input = styled.input`
@@ -19,51 +56,3 @@ const Input = styled.input`
   height: 42px;
   width: 100%;
 `;
-
-const TitleLabel = styled.label`
-  display: block;
-`;
-
-interface InputProps {
-  title?: string;
-  value: string;
-  changeHandler: ({ e, fnc }: ChangeValue) => void;
-  changeFunction: React.Dispatch<React.SetStateAction<string>>;
-  placeholder?: string;
-  buttonProperty?: ButtonProperty;
-}
-
-function InputBox({
-  title,
-  placeholder,
-  buttonProperty,
-  changeHandler,
-  changeFunction,
-  value,
-}: InputProps) {
-  const [isValidation, setIsValidation] = useState<boolean>(false);
-  return (
-    <InputBoxContainer>
-      {title ? <TitleLabel>{title}</TitleLabel> : null}
-      <InputContainer>
-        <Input
-          value={value}
-          placeholder={placeholder}
-          onChange={(e) => {
-            changeHandler({ e, fnc: changeFunction });
-            setIsValidation(e.currentTarget.value.length > 8);
-          }}
-        />
-        {buttonProperty ? (
-          <ConfirmButton
-            buttonTitle={buttonProperty.buttonTitle}
-            buttonHandler={buttonProperty.buttonHandler}
-            isValidation={isValidation}
-          ></ConfirmButton>
-        ) : null}
-      </InputContainer>
-    </InputBoxContainer>
-  );
-}
-
-export default InputBox;
