@@ -105,10 +105,9 @@ export default function Signup() {
   }, [confirmTime, isEmailConfirmInput, isEmailValidate]);
 
   return (
-    <Layout>
+    <>
+      <Header title={"회원가입"} />
       <SignUpForm onSubmit={handleSubmit(signUpSubmitHandler)}>
-        <Header title={"회원가입"} />
-
         <TitleLabel>이메일</TitleLabel>
         <InputBoxContainer>
           <InputContainer>
@@ -275,7 +274,7 @@ export default function Signup() {
           이상입니다.
         </InfoSpan>
       </SignUpForm>
-    </Layout>
+    </>
   );
 }
 
