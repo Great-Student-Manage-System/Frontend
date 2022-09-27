@@ -1,10 +1,6 @@
-import Layout from "@components/Auth/Layout";
 import Header from "@components/Auth/Header";
 import React, { useState } from "react";
 import styled from "styled-components";
-import InputBox from "@components/Auth/InputBox";
-import { useRecoilValue } from "recoil";
-import { signUpConditionAtom, signUpConditionProps } from "@recoil/atom";
 import ConfirmButton from "@components/Auth/ConfirmButton";
 import { useForm } from "react-hook-form";
 import {
