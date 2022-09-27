@@ -107,7 +107,7 @@ export default function Signup() {
   return (
     <>
       <Header title={"회원가입"} />
-      <SignUpForm onSubmit={handleSubmit(signUpSubmitHandler)}>
+      <AuthForm onSubmit={handleSubmit(signUpSubmitHandler)}>
         <TitleLabel>이메일</TitleLabel>
         <InputBoxContainer>
           <InputContainer>
@@ -273,12 +273,12 @@ export default function Signup() {
           <a>이용약관</a>과 <a>개인정보 수집이용</a>에 동의하며, 만 14세
           이상입니다.
         </InfoSpan>
-      </SignUpForm>
+      </AuthForm>
     </>
   );
 }
 
-const SignUpForm = styled.form`
+export const AuthForm = styled.form`
   display: grid;
   width: var(--auth-content-width);
   margin: 0 auto;
