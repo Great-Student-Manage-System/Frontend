@@ -14,46 +14,21 @@ import { useEffect } from "react";
 
 const CONFIRM_TIME = 300;
 
-export interface ConfirmButtonProps {
-  buttonTitle: string;
-  buttonHandler: (e: React.MouseEvent) => void;
-  isValidation?: boolean;
-}
-
-export interface ChangeValue {
-  e: React.ChangeEvent<HTMLInputElement>;
-  fnc: React.Dispatch<React.SetStateAction<string>>;
-}
-
-export interface ValidateChangeProps {
-  changeArguments: ChangeValue;
-  validation?: (string: string) => boolean;
-  setValidValue?: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-export const inputChangeHandler = ({ e, fnc }: ChangeValue): void => {
-  const { value } = e.currentTarget;
-  fnc(value);
-};
-
 // 관심사의 분리가 필요.
 // 해당 값들을 한번에 처리할 submit 장치가 필요함.
 // react hook form 사용하긴 함.
 
-export const inputValidateHandler = ({
-  changeArguments,
-  validation,
-  setValidValue,
-}: ValidateChangeProps) => {
-  const { e, fnc } = changeArguments;
-  inputChangeHandler({ e, fnc });
-  if (validation && setValidValue) {
-    setValidValue(validation(e.currentTarget.value));
-  }
-};
+interface usetInfoProps {
+  email: string;
+  password: string;
+  rePassword: string;
+  nickName: string;
+  mainSubject: string;
+  detailSubject: string;
+}
 
 export default function Signup() {
-  const { register, handleSubmit, formState } = useForm();
+  const { register, handleSubmit, formState } = useForm<usetInfoProps>();
 
   const [emailValue, setemailValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
@@ -70,14 +45,16 @@ export default function Signup() {
   const [isPasswordValidate, setIsPasswordValidate] = useState(false);
   const [isRePasswordValidate, setIsRePasswordValidate] = useState(false);
   const [isNickNameValidate, setIsNickNameValidate] = useState(false);
+  const [isSubjectValidate, setIsSubjectValidate] = useState(false);
 
-  const emailConfirmProperty = {
-    buttonTitle: "인증하기",
+  const sendEmailProperty = {
+    buttonTitle: "전송하기",
     buttonHandler: (e: React.MouseEvent) => {
       e.preventDefault();
       setIsEmailConfirmInput(isEmailValidate);
     },
   };
+
   const nickNameConfirmProperty = {
     buttonTitle: "중복확인",
     buttonHandler: (e: React.MouseEvent) => {
@@ -85,7 +62,14 @@ export default function Signup() {
     },
   };
 
-  const signUpSubmitHandler = (data: any) => {
+  const confirmEmailProperty = {
+    buttonTitle: "인증하기",
+    buttonHandler: (e: React.MouseEvent) => {
+      e.preventDefault();
+    },
+  };
+
+  const signUpSubmitHandler = (data: usetInfoProps) => {
     // 여기서 submit 처리
     console.log(data, formState);
   };
@@ -127,8 +111,8 @@ export default function Signup() {
             </InputWrap>
             <ConfirmButton
               isValidation={isEmailValidate}
-              buttonTitle={emailConfirmProperty.buttonTitle}
-              buttonHandler={emailConfirmProperty.buttonHandler}
+              buttonTitle={sendEmailProperty.buttonTitle}
+              buttonHandler={sendEmailProperty.buttonHandler}
             ></ConfirmButton>
           </InputContainer>
         </InputBoxContainer>
@@ -138,8 +122,27 @@ export default function Signup() {
             <TitleLabel>인증코드</TitleLabel>
             <InputBoxContainer>
               <InputContainer>
-                <Input type="number" placeholder="인증코드를 입력해주세요" />
-                <div>{dayjs((confirmTime || 0) * 1000).format("mm:ss")}</div>
+                <div
+                  style={{
+                    position: "relative",
+                  }}
+                >
+                  <Input type="number" placeholder="인증코드를 입력해주세요" />
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "0",
+                      right: 0,
+                      margin: "10px",
+                    }}
+                  >
+                    {dayjs((confirmTime || 0) * 1000).format("mm:ss")}
+                  </div>
+                </div>
+                <ConfirmButton
+                  buttonTitle={confirmEmailProperty.buttonTitle}
+                  buttonHandler={confirmEmailProperty.buttonHandler}
+                ></ConfirmButton>
               </InputContainer>
             </InputBoxContainer>
           </>
@@ -227,8 +230,13 @@ export default function Signup() {
         <InputBoxContainer>
           <InputContainer>
             <select
-              onChange={(e) => setMainSubject(Number(e.target.value))}
-              required={true}
+              {...register("mainSubject", {
+                onChange: (e) => {
+                  setMainSubject(Number(e.target.value));
+                  setIsSubjectValidate(false);
+                },
+                required: true,
+              })}
             >
               <option hidden={true}>과목을 선택해주세요</option>
               <option value={MAIN_SUBJECTS.국어}>국어</option>
@@ -238,12 +246,15 @@ export default function Signup() {
             </select>
             {mainSubject !== -1 ? (
               <select
-                onChange={(e) =>
-                  setSubjectValue({
-                    [mainSubject]: e.target.value,
-                  })
-                }
-                required={true}
+                {...register("detailSubject", {
+                  onChange: (e) => {
+                    setSubjectValue({
+                      [mainSubject]: e.target.value,
+                    });
+                    setIsSubjectValidate(true);
+                  },
+                  required: true,
+                })}
               >
                 <option hidden={true}>상세과목을 선택해주세요</option>
                 {DETAIL_SUBJECTS[mainSubject as MAIN_SUBJECTS].map((detail) => (
@@ -256,12 +267,12 @@ export default function Signup() {
 
         <button
           type="submit"
-          // disabled={
-          //   !signUpCondition.email ||
-          //   !signUpCondition.nickName ||
-          //   !isPasswordValidate ||
-          //   !signUpCondition.subject
-          // }
+          disabled={
+            // !signUpCondition.email ||
+            // !signUpCondition.nickName ||
+            !isPasswordValidate || !isRePasswordValidate || !isSubjectValidate
+            // !signUpCondition.subject
+          }
         >
           동의하고 회원가입하기
         </button>

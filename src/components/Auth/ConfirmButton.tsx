@@ -1,4 +1,3 @@
-import { ConfirmButtonProps } from "@pages/Auth/Signup";
 import styled from "styled-components";
 
 const Button = styled.button`
@@ -8,10 +7,16 @@ const Button = styled.button`
   font-size: 1.4rem;
 `;
 
+interface ConfirmButtonProps {
+  buttonTitle: string;
+  buttonHandler: (e: React.MouseEvent) => void;
+  isValidation?: boolean;
+}
+
 function ConfirmButton({
   buttonTitle,
   buttonHandler,
-  isValidation,
+  isValidation = true,
 }: ConfirmButtonProps) {
   return (
     <Button onClick={buttonHandler} disabled={!isValidation}>
