@@ -1,12 +1,9 @@
 import Contents from "@components/layouts/Contents";
 import Main from "@components/layouts/Main";
 import Section from "@components/layouts/Section";
+import { PropsWithChildren } from "react";
 
-interface Props {
-  children: JSX.Element;
-}
-
-function Layout({ children }: Props) {
+function Layout({ children }: PropsWithChildren) {
   return (
     <Main>
       <Section>

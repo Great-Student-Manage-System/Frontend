@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { PropsWithChildren, ReactNode } from "react";
 import styled from "styled-components";
 
 const ContentsContainer = styled.div`
@@ -13,7 +13,7 @@ interface Props {
   children: JSX.Element;
 }
 
-function Contents({ children }: Props) {
+function Contents({ children }: PropsWithChildren) {
   return <ContentsContainer>{children}</ContentsContainer>;
 }
 

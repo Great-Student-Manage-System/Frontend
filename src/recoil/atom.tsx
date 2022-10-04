@@ -11,3 +11,9 @@ export const signUpConditionAtom = atom<signUpConditionProps>({
   key: "signUpCondition",
   default: { email: false, password: false, nickName: false, subject: false },
 });
+
+
+export const openModalAtom = atom<boolean>({
+  key: "isModalOpen",
+  default: false,
+});
