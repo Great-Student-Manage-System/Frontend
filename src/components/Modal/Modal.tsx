@@ -1,4 +1,5 @@
-import { openModalAtom } from "@recoil/atom";
+import { currentModal } from "@data/currentModalState";
+import { modalState, openModalAtom } from "@recoil/atom";
 import { useMemo } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
@@ -8,7 +9,22 @@ function Modal() {
   // children에 값을 전달하는게 아니라 modal Data에 맞게
   // modal창을 전달하도록 설정.
   // 근데 그렇게 하기 위해서는 modal처리가 따로 필요하긴 함.
-  const modalElement = useMemo(() => <></>, []);
+  const [currentModalState, setCurrentModalState] =
+    useRecoilState<currentModal>(modalState);
+  const modalElement = useMemo(
+    () => (
+      <>
+        {currentModalState === currentModal.APPEND_STUDENT ? (
+          <>AppendStudent</>
+        ) : currentModalState === currentModal.TEMP ? (
+          <>temp</>
+        ) : (
+          <></>
+        )}
+      </>
+    ),
+    [currentModalState],
+  );
   return (
     <ModalContainer>
       {modalElement}
