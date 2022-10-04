@@ -23,8 +23,16 @@ export default function Login() {
       <Header title="로그인" />
       {isEmailLogin ? (
         <AuthForm onSubmit={handleSubmit(loginSubmitHandler)}>
-          <EmailLoginInput type={"email"} {...register("email")} />
-          <EmailLoginInput type={"password"} {...register("password")} />
+          <EmailLoginInput
+            type={"email"}
+            {...register("email")}
+            placeholder="이메일을 입력해주세요"
+          />
+          <EmailLoginInput
+            type={"password"}
+            {...register("password")}
+            placeholder="비밀번호를 입력해주세요"
+          />
           <LoginWayButton type="submit">로그인</LoginWayButton>
           <SignUpParagraph>
             비밀번호가 기억나지 않나요?
