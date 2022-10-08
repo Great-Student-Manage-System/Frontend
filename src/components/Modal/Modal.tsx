@@ -3,6 +3,7 @@ import { modalState, openModalAtom } from "@recoil/atom";
 import { useMemo } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import AppendStudentModal from "./AppendStudentModal";
 
 function Modal() {
   const [isOpenModal, setOpenModal] = useRecoilState<boolean>(openModalAtom);
@@ -15,7 +16,7 @@ function Modal() {
     () => (
       <>
         {currentModalState === currentModal.APPEND_STUDENT ? (
-          <>AppendStudent</>
+          <AppendStudentModal />
         ) : currentModalState === currentModal.TEMP ? (
           <>temp</>
         ) : (
@@ -61,7 +62,7 @@ const Backdrop = styled.div`
   height: 100vh;
   position: fixed;
   top: 0;
-  z-index: 9999;
+  z-index: 101;
   background-color: rgba(0, 0, 0, 0.2);
 `;
 
