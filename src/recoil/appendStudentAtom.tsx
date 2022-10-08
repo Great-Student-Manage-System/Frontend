@@ -18,5 +18,5 @@ export const appendStudentAtom = atom<{
   [key: string]: appendStudentInfoProps;
 }>({
   key: "appendStudentAtom",
-  default: { 0: initialStudentInfo },
+  default: { [Date.now()]: initialStudentInfo },
 });
