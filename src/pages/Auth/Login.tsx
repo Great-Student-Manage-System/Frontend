@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { AuthForm } from "./Signup";
+import KaKaoLoginImage from "@images/kakao_login_large_wide.png";
 
 interface formProps {
   [key: string]: string;
@@ -47,7 +48,7 @@ export default function Login() {
             이메일 로그인
           </LoginWayButton>
           <SeperateLine />
-          <LoginWayButton>Kakao로 로그인</LoginWayButton>
+          <KaKaoLoginButton />
           <LoginWayButton>Google로 로그인</LoginWayButton>
           <SignUpParagraph>
             그레잇이 처음이신가요?
@@ -77,6 +78,13 @@ const LoginWayButton = styled.button`
   height: 5.6rem;
   margin: 1.6rem auto;
   border-radius: 0.6rem;
+`;
+
+const KaKaoLoginButton = styled(LoginWayButton)`
+  border: none;
+  background-image: url(${KaKaoLoginImage});
+  background-size: var(--auth-content-width);
+  background-repeat: no-repeat;
 `;
 
 const SeperateLine = styled.hr`
