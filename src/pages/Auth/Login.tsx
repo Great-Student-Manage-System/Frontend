@@ -1,3 +1,4 @@
+import GoogleLoginButton from "@components/Auth/GoogleLogin";
 import Header from "@components/Auth/Header";
 import KaKaoLogin, { LoginWayButton } from "@components/Auth/KaKaoLogin";
 import React, { useState } from "react";
@@ -49,7 +50,7 @@ export default function Login() {
           </LoginWayButton>
           <SeperateLine />
           <KaKaoLogin />
-          <LoginWayButton>Google로 로그인</LoginWayButton>
+          <GoogleLoginButton />
           <SignUpParagraph>
             그레잇이 처음이신가요?
             <span>
