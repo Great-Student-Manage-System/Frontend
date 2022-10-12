@@ -9,12 +9,11 @@ const Base = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  box-shadow: rgb(0 0 0 / 10%) 0px 1px 0px 0px;
 `;
 
 const List = styled.ul`
   margin: 0 auto;
-  max-width: 85%;
+  width: 85%;
   height: 100%;
   padding: 0;
   display: flex;
