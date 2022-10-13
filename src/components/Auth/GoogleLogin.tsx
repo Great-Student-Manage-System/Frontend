@@ -1,4 +1,3 @@
-import { CLIENT_ID } from "@data/googleLogin";
 import GoogleLogin from "react-google-login";
 import { LoginWayButton } from "./KaKaoLogin";
 import styled from "styled-components";
@@ -32,7 +31,7 @@ function GoogleLoginButton() {
   return (
     <GoogleLogin
       style={{ padding: "0px" }}
-      clientId={CLIENT_ID}
+      clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID as string}
       onSuccess={onSuccessHandler}
       onFailure={onFailureHandler}
       cookiePolicy="single_host_origin"

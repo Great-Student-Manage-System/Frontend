@@ -1,9 +1,4 @@
-import {
-  KAKAO_AUTH_URL,
-  REST_API_KEY,
-  REDIRECT_URI,
-  CLIENT_SECRET,
-} from "@data/kakaoLogin";
+import { KAKAO_AUTH_URL, REDIRECT_URI } from "@data/kakaoLogin";
 import KaKaoLoginImage from "@images/kakao_login_large_wide.png";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -16,10 +11,10 @@ function KaKaoLogin() {
 
   const bodyProps = {
     grant_type: "authorization_code",
-    client_id: REST_API_KEY,
+    client_id: process.env.REACT_APP_KAKAO_REST_API_KEY,
     redirect_uri: REDIRECT_URI,
     code: KAKAO_CODE,
-    client_secret: CLIENT_SECRET,
+    client_secret: process.env.REACT_APP_KAKAO_CLIENT_SECRET,
   };
 
   const getKaKaoToken = () => {

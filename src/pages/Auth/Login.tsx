@@ -13,9 +13,8 @@ interface formProps {
 
 export default function Login() {
   const { register, handleSubmit, formState } = useForm();
-
   const [isEmailLogin, setIsEmailLogin] = useState(false);
-
+  console.log(process.env.REACT_APP_GOOGLE_CLIENT_ID);
   const loginSubmitHandler = (data: formProps) => {
     console.log(data);
   };

@@ -14,9 +14,15 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
-    "typeRoots": ["@types"]
+    "jsx": "react-jsx"
+    /*
+      typeRoots를 설정하면 process를 받지 못하고
+      types를 설정하면 .png와 .svg를 받지 못해
+      그럼 어떻게 해야하나?
+      두개 해결 가능한 방법은?
+    */
+    // "typeRoots": ["@types"]
   },
-  "include": ["src"],
+  "include": ["src", "@types"],
   "extends": "./tsconfig.paths.json"
 }
