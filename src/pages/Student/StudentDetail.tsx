@@ -12,7 +12,7 @@ interface STUDENT_INFO {
   subjects: string;
 }
 
-interface StudentExamProps {
+export interface StudentExamProps {
   name: string;
   score: number;
   grade: number;
