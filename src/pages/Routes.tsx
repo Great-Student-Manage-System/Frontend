@@ -13,9 +13,8 @@ function URLRoutes() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/students" element={<Students />}>
-          <Route path="/students/:id" element={<StudentDetail />} />
-        </Route>
+        <Route path="/students" element={<Students />} />
+        <Route path="/students/:id" element={<StudentDetail />} />
         <Route path="/exams" element={<Exams />}>
           <Route path="/exams/:id" element={<ExamDetail />} />
         </Route>
