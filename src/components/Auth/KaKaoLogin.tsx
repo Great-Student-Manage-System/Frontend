@@ -50,6 +50,10 @@ export const LoginWayButton = styled.button`
   height: 5.6rem;
   margin: 1.6rem auto;
   border-radius: 0.6rem;
+
+  &:hover {
+    opacity: 0.5;
+  }
 `;
 
 const KaKaoLoginButton = styled(LoginWayButton)`
