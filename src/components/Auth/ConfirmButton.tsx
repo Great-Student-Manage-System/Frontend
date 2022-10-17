@@ -1,12 +1,5 @@
 import styled from "styled-components";
 
-const Button = styled.button`
-  min-width: 7.2rem;
-  height: 4.2rem;
-  margin-left: 0.8rem;
-  font-size: 1.4rem;
-`;
-
 interface ConfirmButtonProps {
   buttonTitle: string;
   buttonHandler: (e: React.MouseEvent) => void;
@@ -24,5 +17,18 @@ function ConfirmButton({
     </Button>
   );
 }
+
+const Button = styled.button`
+  min-width: 7.2rem;
+  height: 4.2rem;
+  margin-left: 0.8rem;
+  font-size: 1.4rem;
+
+  background: ${(props) => (props.disabled ? `#BDBDBD` : `#319CEA`)};
+  border-radius: 6px;
+
+  border: none;
+  color: #fff;
+`;
 
 export default ConfirmButton;

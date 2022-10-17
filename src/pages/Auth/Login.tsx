@@ -36,9 +36,9 @@ export default function Login() {
           <LoginWayButton type="submit">로그인</LoginWayButton>
           <SignUpParagraph>
             비밀번호가 기억나지 않나요?
-            <span>
+            <SignUpSpan>
               <Link to="/"> 비밀번호 찾기</Link>
-            </span>
+            </SignUpSpan>
           </SignUpParagraph>
         </AuthForm>
       ) : (
@@ -81,6 +81,11 @@ const SeperateLine = styled.hr`
 
 const SignUpParagraph = styled.p`
   margin: 0 auto;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 24px;
+  font-style: normal;
+
   span {
     color: var(--primary);
   }

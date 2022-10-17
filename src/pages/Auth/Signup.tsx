@@ -133,7 +133,7 @@ export default function Signup() {
                       position: "absolute",
                       top: "0",
                       right: 0,
-                      margin: "10px",
+                      margin: "1rem",
                     }}
                   >
                     {dayjs((confirmTime || 0) * 1000).format("mm:ss")}
@@ -229,7 +229,7 @@ export default function Signup() {
         <TitleLabel>담당 과목</TitleLabel>
         <InputBoxContainer>
           <InputContainer>
-            <select
+            <SubjectSelect
               {...register("mainSubject", {
                 onChange: (e) => {
                   setMainSubject(Number(e.target.value));
@@ -243,9 +243,9 @@ export default function Signup() {
               <option value={MAIN_SUBJECTS.수학}>수학</option>
               <option value={MAIN_SUBJECTS.사회}>사회</option>
               <option value={MAIN_SUBJECTS.과학}>과학</option>
-            </select>
+            </SubjectSelect>
             {mainSubject !== -1 ? (
-              <select
+              <SubjectSelect
                 {...register("detailSubject", {
                   onChange: (e) => {
                     setSubjectValue({
@@ -260,12 +260,12 @@ export default function Signup() {
                 {DETAIL_SUBJECTS[mainSubject as MAIN_SUBJECTS].map((detail) => (
                   <option value={detail}>{detail}</option>
                 ))}
-              </select>
+              </SubjectSelect>
             ) : null}
           </InputContainer>
         </InputBoxContainer>
 
-        <button
+        <SignUpButton
           type="submit"
           disabled={
             // !signUpCondition.email ||
@@ -275,7 +275,7 @@ export default function Signup() {
           }
         >
           동의하고 회원가입하기
-        </button>
+        </SignUpButton>
         <InfoSpan>
           <a>이용약관</a>과 <a>개인정보 수집이용</a>에 동의하며, 만 14세
           이상입니다.
@@ -304,6 +304,15 @@ const InfoSpan = styled.span`
 
 const TitleLabel = styled.label`
   display: block;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 1.4rem;
+  line-height: 2.4rem;
+  /* identical to box height, or 171% */
+
+  letter-spacing: -0.25px;
+
+  color: #000000;
 `;
 
 const InputBoxContainer = styled.div`
@@ -322,7 +331,47 @@ const InputWrap = styled.div`
 
 const Input = styled.input`
   max-width: var(--auth-content-width);
-  min-width: 296px;
-  height: 42px;
+  min-width: 29.6rem;
+  height: 4.2rem;
   width: 100%;
+  /* secondary/white */
+
+  background: #ffffff;
+  /* gray/lightgray */
+
+  border: 0.1rem solid var(--grey);
+  border-radius: 0.6rem;
+
+  margin-bottom: 1.6rem;
+  padding: 0 1.2rem;
+`;
+
+const SubjectSelect = styled.select`
+  padding: 0.8rem 1.2rem;
+  /* secondary/white */
+
+  background: #ffffff;
+  /* Gray 4 */
+
+  border: 0.1rem solid var(--grey);
+  border-radius: 0.6rem;
+
+  margin: 0 0.4rem;
+`;
+
+const SignUpButton = styled.button`
+  width: 37.6rem;
+  height: 5.6rem;
+
+  /* gray/lightgray */
+  margin: 1.6rem 0 0.8rem 0;
+
+  background: var(--grey);
+  border-radius: 0.6rem;
+
+  color: #fff;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 1.4rem;
+  line-height: 2.4rem;
 `;
