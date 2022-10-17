@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
+import { GrAdd } from "react-icons/gr";
 
 const FormWrapper = styled.div`
   width: 100%;
@@ -53,7 +54,7 @@ const Select = styled.select`
 const Input = styled.input`
   position: relative;
   height: 30px;
-  width: 200px;
+  width: 250px;
   border: 1px solid grey;
   border-radius: 5px;
   padding-left: 8px;
@@ -69,7 +70,21 @@ const Search = styled.button`
   font-size: 12px;
   border: none;
   cursor: pointer;
-  margin: 10px 5px 10px 15px;
+  margin: 10px 5px 10px 10px;
+`;
+
+const Add = styled.button`
+  border-radius: 6px;
+  font-size: 12px;
+  border: solid #bdbdbd 1px;
+  background: white;
+  cursor: pointer;
+  height: 30px;
+  margin: 10px 5px 10px 10px;
+
+  .add {
+    margin: 0 5px 0 0;
+  }
 `;
 
 export default function SearchForm() {
@@ -99,6 +114,10 @@ export default function SearchForm() {
           </Select>
           <Input placeholder="학생이름"></Input>
           <Search>검색</Search>
+          <Add>
+            <GrAdd className="add" />
+            학생추가하기
+          </Add>
         </Form>
       </FormWrapper>
     </>

@@ -33,7 +33,7 @@ const TH = styled.th`
   text-weight: bold;
   width: 100px;
   padding: 3px;
-  width: 5%;
+  width: 15em;
 `;
 
 export default function Table() {
