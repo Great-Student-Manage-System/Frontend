@@ -69,7 +69,9 @@ const EmailLoginInput = styled.input`
   height: 5.6rem;
   margin: 0.8rem 0;
   border-radius: 0.8rem;
-  border: 1px solid #bdbdbd;
+  border: 1px solid var(--grey);
+  outline: none;
+  padding: 0 1.6rem;
 `;
 
 const SeperateLine = styled.hr`

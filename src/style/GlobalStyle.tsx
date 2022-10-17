@@ -43,6 +43,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
 :root {
   --primary: #319CEA;
+  --grey:#BDBDBD;
   --content-width: 1024px;
   --content-margin: 2rem;
   --auth-content-width: 376px;

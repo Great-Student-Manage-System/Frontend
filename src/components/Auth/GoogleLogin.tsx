@@ -50,8 +50,9 @@ function GoogleLoginButton() {
 export default GoogleLoginButton;
 
 const GoogleLoginContainer = styled(LoginWayButton)`
-  border: 1.5px solid #bdbdbd;
+  border: 1.5px solid var(--grey);
   background-color: #ffffff;
+  color: #000;
   &:hover {
     opacity: 0.5;
   }
