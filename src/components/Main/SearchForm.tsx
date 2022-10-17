@@ -101,9 +101,9 @@ export default function SearchForm() {
         <Form>
           <Select>
             <option>학년</option>
-            <option>1학년</option>
-            <option>2학년</option>
-            <option>3학년</option>
+            <option value={1}>1학년</option>
+            <option value={2}>2학년</option>
+            <option value={3}>3학년</option>
           </Select>
           <Select>
             <option>선택과목</option>
@@ -114,7 +114,7 @@ export default function SearchForm() {
           </Select>
           <Input placeholder="학생이름"></Input>
           <Search>검색</Search>
-          <Add>
+          <Add hidden={pathname === "/exams"}>
             <GrAdd className="add" />
             학생추가하기
           </Add>

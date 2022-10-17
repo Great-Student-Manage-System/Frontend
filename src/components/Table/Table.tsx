@@ -1,9 +1,9 @@
 import React from "react";
 import { useRecoilValue } from "recoil";
 import Student from "@components/Table/Student";
-import { studentsTypes, studentsAtom } from "@recoil/atom";
+import { studentsTypes, studentsAtom } from "@recoil/studentsAtom";
 import Exam from "@components/Table/Exam";
-import { examsTypes, examsAtom } from "@recoil/atom";
+import { examsTypes, examsAtom } from "@recoil/examsAtom";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
 

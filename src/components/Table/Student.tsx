@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { useRecoilState } from "recoil";
-import { studentsTypes, studentsAtom } from "@recoil/atom";
+import { studentsTypes, studentsAtom } from "@recoil/studentsAtom";
 import styled from "styled-components";
 import { CgMoreO } from "react-icons/cg";
 
