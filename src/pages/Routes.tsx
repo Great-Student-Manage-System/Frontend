@@ -4,9 +4,10 @@ import Students from "@pages/Student/Students";
 import StudentDetail from "@pages/Student/StudentDetail";
 import Exams from "@pages/Exam/Exams";
 import ExamDetail from "@pages/Exam/ExamDetail";
-import Mypage from "@pages/Mypage";
 import Login from "@pages/Auth/Login";
 import Signup from "@pages/Auth/Signup";
+import Account from "@pages/Mypage/Account";
+import Profile from "@pages/Mypage/Profile";
 
 function URLRoutes() {
   return (
@@ -18,7 +19,8 @@ function URLRoutes() {
         <Route path="/exams" element={<Exams />}>
           <Route path="/exams/:id" element={<ExamDetail />} />
         </Route>
-        <Route path="/mypage" element={<Mypage />} />
+        <Route path="/mypage/account" element={<Account />} />
+        <Route path="/mypage/profile" element={<Profile />} />
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/signup" element={<Signup />} />
       </Routes>
