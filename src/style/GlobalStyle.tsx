@@ -1,5 +1,4 @@
 import { createGlobalStyle } from "styled-components";
-
 const GlobalStyle = createGlobalStyle`
  html,
 body {
@@ -35,6 +34,12 @@ button {
 
 input,select{
   outline: none;
+}
+select{
+  border-radius:0; /* 아이폰 사파리 보더 없애기 */
+	-webkit-appearance:none; /* 화살표 없애기 for chrome*/
+	-moz-appearance:none; /* 화살표 없애기 for firefox*/
+	appearance:none; /* 화살표 없애기 공통*/
 }
 
 input[type="number"]::-webkit-inner-spin-button,

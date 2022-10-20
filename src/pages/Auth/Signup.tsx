@@ -8,9 +8,10 @@ import {
   passwordValidation,
   nickNameValidation,
 } from "@utility/validation";
-import { MAIN_SUBJECTS, DETAIL_SUBJECTS } from "@data/subjectData";
+import { MAIN_SUBJECTS } from "@data/subjectData";
 import dayjs from "dayjs";
 import { useEffect } from "react";
+import downSideIcon from "@images/Icon/down_side_icon.svg";
 
 const CONFIRM_TIME = 300;
 
@@ -228,7 +229,7 @@ export default function Signup() {
 
         <TitleLabel>담당 과목</TitleLabel>
         <InputBoxContainer>
-          <InputContainer>
+          <SelectContainer>
             <SubjectSelect
               {...register("mainSubject", {
                 onChange: (e) => {
@@ -238,7 +239,7 @@ export default function Signup() {
                 required: true,
               })}
             >
-              <option hidden={true}>과목을 선택해주세요</option>
+              <option hidden={true}>과목</option>
               <option value={MAIN_SUBJECTS.국어}>국어</option>
               <option value={MAIN_SUBJECTS.수학}>수학</option>
               <option value={MAIN_SUBJECTS.사회}>사회</option>
@@ -262,7 +263,7 @@ export default function Signup() {
                 ))}
               </SubjectSelect>
             ) : null} */}
-          </InputContainer>
+          </SelectContainer>
         </InputBoxContainer>
 
         <SignUpButton
@@ -325,6 +326,8 @@ const InputContainer = styled.div`
   /* align-items: center; */
 `;
 
+const SelectContainer = styled(InputContainer)``;
+
 const InputWrap = styled.div`
   width: 100%;
 `;
@@ -349,10 +352,10 @@ const Input = styled.input`
 const SubjectSelect = styled.select`
   padding: 0.8rem 1.2rem;
   /* secondary/white */
-
-  background: #ffffff;
+  min-width: 9.2rem;
   /* Gray 4 */
-
+  background: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9L12 15L18 9' stroke='%23212121' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A")
+    no-repeat right 8px center;
   border: 0.1rem solid var(--grey);
   border-radius: 0.6rem;
 
