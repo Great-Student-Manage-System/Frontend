@@ -10,18 +10,18 @@ function Modal() {
   // modal창을 전달하도록 설정.
   // 근데 그렇게 하기 위해서는 modal처리가 따로 필요하긴 함.
 
-  useEffect(() => {
-    document.body.style.cssText = `
-      position: fixed; 
-      top: -${window.scrollY}px;
-      overflow-y: scroll;
-      width: 100%;`;
-    return () => {
-      const scrollY = document.body.style.top;
-      document.body.style.cssText = "";
-      window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
-    };
-  }, []);
+  // useEffect(() => {
+  //   document.body.style.cssText = `
+  //     position: fixed;
+  //     top: -${window.scrollY}px;
+  //     overflow-y: scroll;
+  //     width: 100%;`;
+  //   return () => {
+  //     const scrollY = document.body.style.top;
+  //     document.body.style.cssText = "";
+  //     window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
+  //   };
+  // }, []);
 
   const currentModalState = useRecoilValue<currentModal>(modalState);
   const modalElement = useMemo(

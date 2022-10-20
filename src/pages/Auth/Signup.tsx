@@ -233,7 +233,7 @@ export default function Signup() {
               {...register("mainSubject", {
                 onChange: (e) => {
                   setMainSubject(Number(e.target.value));
-                  setIsSubjectValidate(false);
+                  setIsSubjectValidate(true);
                 },
                 required: true,
               })}
@@ -244,7 +244,7 @@ export default function Signup() {
               <option value={MAIN_SUBJECTS.사회}>사회</option>
               <option value={MAIN_SUBJECTS.과학}>과학</option>
             </SubjectSelect>
-            {mainSubject !== -1 ? (
+            {/* {mainSubject !== -1 ? (
               <SubjectSelect
                 {...register("detailSubject", {
                   onChange: (e) => {
@@ -261,7 +261,7 @@ export default function Signup() {
                   <option value={detail}>{detail}</option>
                 ))}
               </SubjectSelect>
-            ) : null}
+            ) : null} */}
           </InputContainer>
         </InputBoxContainer>
 
@@ -288,7 +288,7 @@ export default function Signup() {
 export const AuthForm = styled.form`
   display: grid;
   width: var(--auth-content-width);
-  margin: 0 auto;
+  margin: 0 auto 6rem auto;
 `;
 
 const InfoSpan = styled.span`
@@ -374,4 +374,6 @@ const SignUpButton = styled.button`
   font-weight: 700;
   font-size: 1.4rem;
   line-height: 2.4rem;
+
+  border: none;
 `;
