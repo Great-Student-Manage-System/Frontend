@@ -6,7 +6,8 @@ export const emailValidation = (email: string): boolean => {
 
 export const passwordValidation = (password: string): boolean => {
   // 8~15자 특수문자 / 문지/ 숫자 포함
-  const regExp = /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
+  const regExp =
+    /^.*(?=^.{8,20}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[~!@#$%^&*()+|=]).*$/;
   return regExp.test(password);
 };
 
