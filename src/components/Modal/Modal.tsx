@@ -1,22 +1,37 @@
 import { currentModal } from "@data/currentModalState";
 import { modalState } from "@recoil/atom";
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import AppendRecordModal from "./AppendRecordModal";
 import AppendStudentModal from "./AppendStudentModal";
 
 function Modal() {
   // children에 값을 전달하는게 아니라 modal Data에 맞게
   // modal창을 전달하도록 설정.
   // 근데 그렇게 하기 위해서는 modal처리가 따로 필요하긴 함.
+
+  // useEffect(() => {
+  //   document.body.style.cssText = `
+  //     position: fixed;
+  //     top: -${window.scrollY}px;
+  //     overflow-y: scroll;
+  //     width: 100%;`;
+  //   return () => {
+  //     const scrollY = document.body.style.top;
+  //     document.body.style.cssText = "";
+  //     window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
+  //   };
+  // }, []);
+
   const currentModalState = useRecoilValue<currentModal>(modalState);
   const modalElement = useMemo(
     () => (
       <>
         {currentModalState === currentModal.APPEND_STUDENT ? (
           <AppendStudentModal />
-        ) : currentModalState === currentModal.TEMP ? (
-          <>temp</>
+        ) : currentModalState === currentModal.APPEND_RECORD ? (
+          <AppendRecordModal />
         ) : (
           <></>
         )}

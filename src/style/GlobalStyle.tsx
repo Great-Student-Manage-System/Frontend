@@ -1,5 +1,4 @@
 import { createGlobalStyle } from "styled-components";
-
 const GlobalStyle = createGlobalStyle`
  html,
 body {
@@ -33,6 +32,16 @@ button {
   cursor: pointer;
 }
 
+input,select{
+  outline: none;
+}
+select{
+  border-radius:0; /* 아이폰 사파리 보더 없애기 */
+	-webkit-appearance:none; /* 화살표 없애기 for chrome*/
+	-moz-appearance:none; /* 화살표 없애기 for firefox*/
+	appearance:none; /* 화살표 없애기 공통*/
+}
+
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -43,6 +52,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
 :root {
   --primary: #319CEA;
+  --grey:#BDBDBD;
   --content-width: 1024px;
   --content-margin: 2rem;
   --auth-content-width: 376px;

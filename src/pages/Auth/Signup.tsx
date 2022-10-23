@@ -8,9 +8,10 @@ import {
   passwordValidation,
   nickNameValidation,
 } from "@utility/validation";
-import { MAIN_SUBJECTS, DETAIL_SUBJECTS } from "@data/subjectData";
+import { MAIN_SUBJECTS } from "@data/subjectData";
 import dayjs from "dayjs";
 import { useEffect } from "react";
+import downSideIcon from "@images/Icon/down_side_icon.svg";
 
 const CONFIRM_TIME = 300;
 
@@ -133,7 +134,7 @@ export default function Signup() {
                       position: "absolute",
                       top: "0",
                       right: 0,
-                      margin: "10px",
+                      margin: "1rem",
                     }}
                   >
                     {dayjs((confirmTime || 0) * 1000).format("mm:ss")}
@@ -228,24 +229,24 @@ export default function Signup() {
 
         <TitleLabel>담당 과목</TitleLabel>
         <InputBoxContainer>
-          <InputContainer>
-            <select
+          <SelectContainer>
+            <SubjectSelect
               {...register("mainSubject", {
                 onChange: (e) => {
                   setMainSubject(Number(e.target.value));
-                  setIsSubjectValidate(false);
+                  setIsSubjectValidate(true);
                 },
                 required: true,
               })}
             >
-              <option hidden={true}>과목을 선택해주세요</option>
+              <option hidden={true}>과목</option>
               <option value={MAIN_SUBJECTS.국어}>국어</option>
               <option value={MAIN_SUBJECTS.수학}>수학</option>
               <option value={MAIN_SUBJECTS.사회}>사회</option>
               <option value={MAIN_SUBJECTS.과학}>과학</option>
-            </select>
-            {mainSubject !== -1 ? (
-              <select
+            </SubjectSelect>
+            {/* {mainSubject !== -1 ? (
+              <SubjectSelect
                 {...register("detailSubject", {
                   onChange: (e) => {
                     setSubjectValue({
@@ -260,12 +261,12 @@ export default function Signup() {
                 {DETAIL_SUBJECTS[mainSubject as MAIN_SUBJECTS].map((detail) => (
                   <option value={detail}>{detail}</option>
                 ))}
-              </select>
-            ) : null}
-          </InputContainer>
+              </SubjectSelect>
+            ) : null} */}
+          </SelectContainer>
         </InputBoxContainer>
 
-        <button
+        <SignUpButton
           type="submit"
           disabled={
             // !signUpCondition.email ||
@@ -275,7 +276,7 @@ export default function Signup() {
           }
         >
           동의하고 회원가입하기
-        </button>
+        </SignUpButton>
         <InfoSpan>
           <a>이용약관</a>과 <a>개인정보 수집이용</a>에 동의하며, 만 14세
           이상입니다.
@@ -288,7 +289,7 @@ export default function Signup() {
 export const AuthForm = styled.form`
   display: grid;
   width: var(--auth-content-width);
-  margin: 0 auto;
+  margin: 0 auto 6rem auto;
 `;
 
 const InfoSpan = styled.span`
@@ -304,6 +305,15 @@ const InfoSpan = styled.span`
 
 const TitleLabel = styled.label`
   display: block;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 1.4rem;
+  line-height: 2.4rem;
+  /* identical to box height, or 171% */
+
+  letter-spacing: -0.25px;
+
+  color: #000000;
 `;
 
 const InputBoxContainer = styled.div`
@@ -316,13 +326,57 @@ const InputContainer = styled.div`
   /* align-items: center; */
 `;
 
+const SelectContainer = styled(InputContainer)``;
+
 const InputWrap = styled.div`
   width: 100%;
 `;
 
 const Input = styled.input`
   max-width: var(--auth-content-width);
-  min-width: 296px;
-  height: 42px;
+  min-width: 29.6rem;
+  height: 4.2rem;
   width: 100%;
+  /* secondary/white */
+
+  background: #ffffff;
+  /* gray/lightgray */
+
+  border: 0.1rem solid var(--grey);
+  border-radius: 0.6rem;
+
+  margin-bottom: 1.6rem;
+  padding: 0 1.2rem;
+`;
+
+const SubjectSelect = styled.select`
+  padding: 0.8rem 1.2rem;
+  /* secondary/white */
+  min-width: 9.2rem;
+  /* Gray 4 */
+  background: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9L12 15L18 9' stroke='%23212121' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A")
+    no-repeat right 8px center;
+  border: 0.1rem solid var(--grey);
+  border-radius: 0.6rem;
+
+  margin: 0 0.4rem;
+`;
+
+const SignUpButton = styled.button`
+  width: 37.6rem;
+  height: 5.6rem;
+
+  /* gray/lightgray */
+  margin: 1.6rem 0 0.8rem 0;
+
+  background: var(--grey);
+  border-radius: 0.6rem;
+
+  color: #fff;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 1.4rem;
+  line-height: 2.4rem;
+
+  border: none;
 `;

@@ -1,4 +1,4 @@
-import Header from "@components/Header";
+import Header from "@components/Main/Header";
 import Graph from "@components/Students/graph";
 import { StudentExamProps } from "@pages/Student/StudentDetail";
 import React, { useEffect, useMemo, useState } from "react";

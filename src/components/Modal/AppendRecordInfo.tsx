@@ -1,24 +1,25 @@
 import {
-  appendStudentAtom,
-  appendStudentInfoProps,
-} from "@recoil/appendStudentAtom";
+  appendRecordAtom,
+  appendRecordInfoProps,
+  initialRecordInfo,
+} from "@recoil/appendRecordAtom";
 import { useState, useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-interface AppendInfo {
-  studentInfo: appendStudentInfoProps;
-  order: string;
+interface StudentStandardInfo {
+  schoolYear: number;
+  subject: string[];
 }
 
-function AppendStudentInfo({ studentInfo, order }: AppendInfo) {
+function AppendRecordInfo({ schoolYear, subject }: StudentStandardInfo) {
   const [infoObject, setInfoObject] =
-    useState<appendStudentInfoProps>(studentInfo);
-  const setApendStudent = useSetRecoilState(appendStudentAtom);
+    useState<appendRecordInfoProps>(initialRecordInfo);
+  const setAppendRecord = useSetRecoilState(appendRecordAtom);
 
   useEffect(() => {
-    setApendStudent((prev) => ({ ...prev, [order]: infoObject }));
-  }, [infoObject, order, setApendStudent]); // 매핑해서 사용?
+    setAppendRecord((prev) => ({ ...prev, infoObject }));
+  }, [infoObject, setAppendRecord]); // 매핑해서 사용?
 
   const handleOnChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -31,44 +32,39 @@ function AppendStudentInfo({ studentInfo, order }: AppendInfo) {
   return (
     <StudentInfoWrapper style={{ display: "flex" }}>
       <div>
-        <StudentInfoLabel>이름</StudentInfoLabel>
+        <StudentInfoLabel>시험</StudentInfoLabel>
         <StudentInfoInput
-          onChange={(e) => handleOnChange(e, "email")}
-          value={infoObject.email}
-          placeholder="학생이름"
-          required={true}
-        />
-      </div>
-      <div>
-        <StudentInfoLabel>학교</StudentInfoLabel>
-        <StudentInfoInput
-          onChange={(e) => handleOnChange(e, "school")}
-          value={infoObject.school}
-          placeholder="학교이름"
+          onChange={(e) => handleOnChange(e, "examId")}
+          value={infoObject.examId}
+          placeholder="시험"
           required={true}
         />
       </div>
       <div>
         <StudentInfoLabel>학년</StudentInfoLabel>
-        <StudentInfoSelect
-          onChange={(e) => handleOnChange(e, "grade")}
-          required={true}
-        >
-          <option hidden={true}>학년 </option>
-          <option value={1}>1학년</option>
-          <option value={2}>2학년</option>
-          <option value={3}>3학년</option>
-          <option value={4}>재수</option>
-          <option value={5}>N수</option>
-        </StudentInfoSelect>
+        <StudentInfoInput placeholder="학년" value={schoolYear} readOnly />
       </div>
       <div>
         <StudentInfoLabel>선택과목</StudentInfoLabel>
+        <StudentInfoSelect
+          onChange={(e) => handleOnChange(e, "subject")}
+          required={true}
+        >
+          {subject.map((ele) => (
+            <option value={ele}>{ele}</option>
+          ))}
+        </StudentInfoSelect>
+      </div>
+      <div>
+        <StudentInfoLabel>점수</StudentInfoLabel>
         {/* /** 선생 값 설정이 된다면 해당 값에 맞춰 선택과목 추가가 되어야 함. */}
         <StudentInfoInput
-          onChange={(e) => handleOnChange(e, "subjects")}
-          value={infoObject.subjects}
-          placeholder="선택과목"
+          onChange={(e) => handleOnChange(e, "examResult")}
+          value={infoObject.examResult}
+          placeholder="시험 점수"
+          type="number"
+          max={100}
+          min={0}
           required={true}
         />
       </div>
@@ -127,4 +123,4 @@ const StudentInfoSelect = styled.select`
   padding: 0 1.2rem;
   margin-right: 1.6rem;
 `;
-export default AppendStudentInfo;
+export default AppendRecordInfo;

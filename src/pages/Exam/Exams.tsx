@@ -1,10 +1,16 @@
-import Header from "@components/Header";
+import Header from "@components/Main/Header";
 import React from "react";
+import Navigation from "@components/Main/Navigation";
+import SearchForm from "@components/Main/SearchForm";
+import Table from "@components/Table/Table";
 
 export default function Exams() {
   return (
-    <div>
+    <>
       <Header />
-    </div>
+      <Navigation />
+      <SearchForm />
+      <Table />
+    </>
   );
 }

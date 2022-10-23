@@ -14,7 +14,6 @@ interface formProps {
 export default function Login() {
   const { register, handleSubmit, formState } = useForm();
   const [isEmailLogin, setIsEmailLogin] = useState(false);
-  console.log(process.env.REACT_APP_GOOGLE_CLIENT_ID);
   const loginSubmitHandler = (data: formProps) => {
     console.log(data);
   };
@@ -37,24 +36,24 @@ export default function Login() {
           <LoginWayButton type="submit">로그인</LoginWayButton>
           <SignUpParagraph>
             비밀번호가 기억나지 않나요?
-            <span>
+            <SignUpSpan>
               <Link to="/"> 비밀번호 찾기</Link>
-            </span>
+            </SignUpSpan>
           </SignUpParagraph>
         </AuthForm>
       ) : (
         <>
-          <LoginWayButton onClick={() => setIsEmailLogin(true)}>
+          <EmailLoginButton onClick={() => setIsEmailLogin(true)}>
             이메일 로그인
-          </LoginWayButton>
+          </EmailLoginButton>
           <SeperateLine />
           <KaKaoLogin />
           <GoogleLoginButton />
           <SignUpParagraph>
             그레잇이 처음이신가요?
-            <span>
-              <Link to="/auth/signup"> 회원가입</Link>
-            </span>
+            <SignUpSpan>
+              <Link to="/auth/signup">회원가입</Link>
+            </SignUpSpan>
           </SignUpParagraph>
         </>
       )}
@@ -70,7 +69,9 @@ const EmailLoginInput = styled.input`
   height: 5.6rem;
   margin: 0.8rem 0;
   border-radius: 0.8rem;
-  border: 1px solid #bdbdbd;
+  border: 1px solid var(--grey);
+  outline: none;
+  padding: 0 1.6rem;
 `;
 
 const SeperateLine = styled.hr`
@@ -80,7 +81,25 @@ const SeperateLine = styled.hr`
 
 const SignUpParagraph = styled.p`
   margin: 0 auto;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 24px;
+  font-style: normal;
+
   span {
     color: var(--primary);
+  }
+`;
+
+const EmailLoginButton = styled(LoginWayButton)`
+  background-color: #fff;
+  color: var(--primary);
+  border: 1.5px solid var(--primary);
+`;
+
+const SignUpSpan = styled.span`
+  &:hover {
+    font-weight: 700;
+    text-decoration: underline;
   }
 `;

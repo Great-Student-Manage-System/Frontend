@@ -1,7 +1,7 @@
 import GoogleLogin from "react-google-login";
 import { LoginWayButton } from "./KaKaoLogin";
 import styled from "styled-components";
-import GoogleLogo from "@images/google_signin_buttons/web/vector/btn_google_light_normal_ios.svg";
+import { ReactComponent as GoogleLogo } from "@images/google_signin_buttons/web/vector/btn_google_light_normal_ios.svg";
 
 function GoogleLoginButton() {
   const onSuccessHandler = (response: any) => {
@@ -38,7 +38,7 @@ function GoogleLoginButton() {
       render={(render) => (
         <GoogleLoginContainer onClick={render.onClick}>
           <GoogleLoginWrapper>
-            <img src={GoogleLogo} alt="구글로고" />
+            <GoogleLogo />
             <GoogleLoginSpan>구글로 로그인하기</GoogleLoginSpan>
           </GoogleLoginWrapper>
         </GoogleLoginContainer>
@@ -50,8 +50,12 @@ function GoogleLoginButton() {
 export default GoogleLoginButton;
 
 const GoogleLoginContainer = styled(LoginWayButton)`
-  border: 1.5px solid #bdbdbd;
+  border: 1.5px solid var(--grey);
   background-color: #ffffff;
+  color: #000;
+  &:hover {
+    opacity: 0.5;
+  }
 `;
 
 const GoogleLoginWrapper = styled.div`
@@ -62,7 +66,7 @@ const GoogleLoginWrapper = styled.div`
 
 const GoogleLoginSpan = styled.span`
   font-weight: 700;
-  font-size: 14px;
-  line-height: 24px;
+  font-size: 1.5rem;
+  line-height: 2.4rem;
   width: 296px;
 `;
