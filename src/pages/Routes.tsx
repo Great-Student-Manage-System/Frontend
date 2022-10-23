@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "@pages/Home";
 import Students from "@pages/Student/Students";
 import StudentDetail from "@pages/Student/StudentDetail";
@@ -20,6 +20,7 @@ function URLRoutes() {
         <Route path="/mypage" element={<Mypage />} />
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/signup" element={<Signup />} />
+        <Route path="*" element={<Navigate replace to="/" />} />
       </Routes>
     </BrowserRouter>
   );
