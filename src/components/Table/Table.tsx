@@ -22,7 +22,7 @@ const ExamTable = styled.div`
 `;
 
 const TR = styled.tr`
-  height: 100%
+  height: 100%;
   padding: 3px;
   text-align: left;
   width: 900px;

@@ -32,7 +32,7 @@ const Exam = (props: PropsTypes) => {
     <>
       <TR>
         <TD>{examName}</TD>
-        <TD>{schoolYear}학년</TD>
+        <TD> {`${schoolYear}학년`}</TD>
         <TD>{subject}</TD>
       </TR>
     </>

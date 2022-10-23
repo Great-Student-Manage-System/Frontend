@@ -3,6 +3,7 @@ import { modalState } from "@recoil/atom";
 import { useMemo, useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import AppendRecordModal from "./AppendRecordModal";
 import AppendStudentModal from "./AppendStudentModal";
 
 function Modal() {
@@ -29,8 +30,8 @@ function Modal() {
       <>
         {currentModalState === currentModal.APPEND_STUDENT ? (
           <AppendStudentModal />
-        ) : currentModalState === currentModal.TEMP ? (
-          <>temp</>
+        ) : currentModalState === currentModal.APPEND_RECORD ? (
+          <AppendRecordModal />
         ) : (
           <></>
         )}

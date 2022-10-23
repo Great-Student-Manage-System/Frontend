@@ -1,44 +1,41 @@
-import {
-  appendStudentAtom,
-  initialStudentInfo,
-} from "@recoil/appendStudentAtom";
 import { openModalAtom } from "@recoil/atom";
 import { useMemo } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import AppendStudentInfo from "./AppendStudentInfo";
 import appendIcon from "@images/Icon/append_Icon.svg";
+import AppendRecordInfo from "./AppendRecordInfo";
+import { currentStudentAtom } from "@recoil/currentStudentInfo";
+import { appendRecordAtom } from "@recoil/appendRecordAtom";
 
-function AppendStudentModal() {
-  const [initialValue, setInitialValue] = useRecoilState(appendStudentAtom);
+function AppendRecordModal() {
+  const currentStudent = useRecoilValue(currentStudentAtom);
   const setOpenModal = useSetRecoilState<boolean>(openModalAtom);
+  const appendRecordInfo = useRecoilValue(appendRecordAtom);
 
   const studentInfoForm = useMemo(
-    () =>
-      Object.entries(initialValue).map(([key, value]) => (
-        <AppendStudentInfo studentInfo={value} order={key} />
-      )),
-    [initialValue],
+    () => (
+      <AppendRecordInfo
+        schoolYear={currentStudent.grade}
+        subject={currentStudent.subject.split(",")}
+      />
+    ),
+    [],
   );
 
   const appendStuedntSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(initialValue);
-    setInitialValue({ [Date.now()]: initialStudentInfo });
+    // 여기서 학생 성적 받아서 같이 쏴줘야 함.
+    console.log(appendRecordInfo);
   };
 
   return (
     <StudentModalWrapper>
-      <StudentModalTitle>학생 추가하기</StudentModalTitle>
+      <StudentModalTitle>성적 추가하기</StudentModalTitle>
       <AppendForm onSubmit={appendStuedntSubmit}>
         {studentInfoForm}
         <AppendItemButton
           onClick={(e) => {
             e.preventDefault();
-            setInitialValue((cur) => ({
-              ...cur,
-              [Date.now()]: initialStudentInfo,
-            }));
           }}
         >
           <img src={appendIcon} alt="추가 이미지" />
@@ -60,7 +57,7 @@ function AppendStudentModal() {
   );
 }
 
-export default AppendStudentModal;
+export default AppendRecordModal;
 
 const StudentModalWrapper = styled.div`
   width: 75.7rem;
