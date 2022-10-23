@@ -52,8 +52,9 @@ export default function Signup() {
       e.preventDefault();
       sendEmailConfirmNumber(emailValue)
         .then((data) => {
+          console.log(data);
           if (data.code === 200) setIsEmailConfirmInput(true);
-          else alert(data.error);
+          else alert(data.message);
         })
         .catch((error) => {
           console.log(error);
@@ -108,7 +109,6 @@ export default function Signup() {
       const timer = setInterval(() => {
         setConfirmTime((cur) => --cur);
       }, 1000);
-
       return () => clearInterval(timer);
     }
   }, [confirmTime, isEmailConfirmInput, isEmailValidate]);

@@ -4,6 +4,7 @@ import Header from "@components/Auth/Header";
 import KaKaoLogin, { LoginWayButton } from "@components/Auth/KaKaoLogin";
 import { accessTokenAtom } from "@recoil/accessTokenAtom";
 import { setLocalStorage } from "@utility/storage";
+import { emailValidation, passwordValidation } from "@utility/validation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
@@ -15,13 +16,32 @@ interface formProps {
   [key: string]: string;
 }
 
+interface validationProps {
+  e: any;
+  validate: React.Dispatch<React.SetStateAction<boolean>>;
+  validationFunc: (value: string) => boolean;
+}
+
 export default function Login() {
   const { register, handleSubmit } = useForm();
   const [isEmailLogin, setIsEmailLogin] = useState(false);
   const setAccessToken = useSetRecoilState(accessTokenAtom);
   const navigation = useNavigate();
 
+  const [isEmailValidation, setIsEmailValidation] = useState(false);
+  const [isPasswordValidation, setIsPasswordValidation] = useState(false);
+
+  const inputChangeHandler = ({
+    e,
+    validate,
+    validationFunc,
+  }: validationProps) => {
+    const { value } = e.target;
+    validate(validationFunc(value));
+  };
+
   const loginSubmitHandler = (data: formProps) => {
+    console.log(data);
     loginFetcher({ email: data["email"], password: data["password"] })
       .then((data) => {
         console.log(data);
@@ -48,14 +68,33 @@ export default function Login() {
             {...register("email")}
             placeholder="이메일을 입력해주세요"
             required={true}
+            onChange={(e) =>
+              inputChangeHandler({
+                e,
+                validate: setIsEmailValidation,
+                validationFunc: emailValidation,
+              })
+            }
           />
           <EmailLoginInput
             type={"password"}
             {...register("password")}
             placeholder="비밀번호를 입력해주세요"
             required={true}
+            onChange={(e) =>
+              inputChangeHandler({
+                e,
+                validate: setIsPasswordValidation,
+                validationFunc: passwordValidation,
+              })
+            }
           />
-          <LoginWayButton type="submit">로그인</LoginWayButton>
+          <LoginWayButton
+            type="submit"
+            disabled={!isEmailValidation || !isPasswordValidation}
+          >
+            로그인
+          </LoginWayButton>
           <SignUpParagraph>
             비밀번호가 기억나지 않나요?
             <SignUpSpan>
@@ -82,10 +121,6 @@ export default function Login() {
     </>
   );
 }
-
-const LoginWrapper = styled.div`
-  margin: 0 auto;
-`;
 
 const EmailLoginInput = styled.input`
   height: 5.6rem;

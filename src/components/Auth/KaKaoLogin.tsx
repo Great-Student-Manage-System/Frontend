@@ -52,7 +52,7 @@ export const LoginWayButton = styled.button`
   border-radius: 0.6rem;
   outline: none;
   color: #fff;
-  background-color: var(--grey);
+  background-color: ${(props) => (props.disabled ? "#BDBDBD" : "#319CEA")};
   border: none;
   &:hover {
     opacity: 0.5;
