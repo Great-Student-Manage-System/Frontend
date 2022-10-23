@@ -93,13 +93,11 @@ export default function Signup() {
 
     signUpFetcher({ email, password, nickName, subject })
       .then((data) => {
-        console.log(data);
-
         if (data.code !== 200) {
           alert(data.message);
         } else {
           alert(data.response);
-          navigation("/students");
+          navigation("/auth/login");
         }
       })
       .catch((error) => alert(error.message));
