@@ -1,3 +1,5 @@
+import { myInfoProps } from "@recoil/myInfoatom";
+import { getLocalStorageValue } from "@utility/storage";
 import { userInfoProps } from "@utility/types";
 
 export const BASE_URL = "http://great.robinjoon.xyz:8080";
@@ -35,7 +37,23 @@ export function loginFetcher(body: { email: string; password: string }) {
     },
     body: JSON.stringify(body),
   }).then((response) => {
-    // if (!response.ok) throw new Error();
     return response.json();
   });
+}
+
+interface loadMyInfoProps {
+  code: number;
+  response: string;
+  data: myInfoProps;
+  uuid: string;
+}
+
+export function loadMyInfoFetcher(): Promise<loadMyInfoProps> {
+  const accessToken = getLocalStorageValue("token") ?? "";
+
+  return fetch(`${BASE_URL}/api/members/myInfo`, {
+    headers: {
+      Authorization: accessToken,
+    },
+  }).then((response) => response.json());
 }

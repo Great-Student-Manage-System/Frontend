@@ -17,12 +17,9 @@ import {
   confirmEmailNumber,
 } from "@apis/api";
 import { useNavigate } from "react-router-dom";
+import { MAIN_SUBJECTS } from "@data/subjectData";
 
 const CONFIRM_TIME = 300;
-
-// 관심사의 분리가 필요.
-// 해당 값들을 한번에 처리할 submit 장치가 필요함.
-// react hook form 사용하긴 함.
 
 export default function Signup() {
   const { register, handleSubmit } = useForm<userInfoProps>();
@@ -277,10 +274,11 @@ export default function Signup() {
               })}
             >
               <option hidden={true}>과목</option>
-              <option value={"국어"}>국어</option>
-              <option value={"수학"}>수학</option>
-              <option value={"사회"}>사회</option>
-              <option value={"과학"}>과학</option>
+              {(
+                Object.keys(MAIN_SUBJECTS) as Array<keyof typeof MAIN_SUBJECTS>
+              ).map((subject) => (
+                <option value={MAIN_SUBJECTS[subject]}>{subject}</option>
+              ))}
             </SubjectSelect>
           </SelectContainer>
         </InputBoxContainer>

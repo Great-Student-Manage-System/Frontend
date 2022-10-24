@@ -9,7 +9,8 @@
       "@utility/*": ["utility/*"],
       "@data/*": ["data/*"],
       "@images/*": ["images/*"],
-      "@apis/*": ["apis/*"]
+      "@apis/*": ["apis/*"],
+      "@hooks/*": ["hooks/*"]
     }
   }
 }
