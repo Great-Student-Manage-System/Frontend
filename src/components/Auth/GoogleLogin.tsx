@@ -17,14 +17,12 @@ function GoogleLoginButton() {
         },
         body: JSON.stringify(params),
       });
-
-      // localStorage.setItem("accessToken", res.data.token.access);
-      // localStorage.setItem("refreshToken", res.data.token.refresh);
     };
     googleLogin();
   };
 
   const onFailureHandler = (response: any) => {
+    return;
     console.log(response);
   };
 

@@ -8,6 +8,7 @@ import Table, { ObjectType } from "@components/Students/Table";
 import { useSetRecoilState } from "recoil";
 import { currentStudentAtom } from "@recoil/currentStudentInfo";
 import { studentsTypes } from "@recoil/studentsAtom";
+import AuthLayout from "@components/layouts/AuthLayout";
 
 interface STUDENT_INFO {
   studentId: string;
@@ -97,7 +98,7 @@ export default function StudentDetail() {
   }, []);
 
   return (
-    <>
+    <AuthLayout>
       <Header />
       {TEST_INFO && (
         <Wrapper>
@@ -130,7 +131,7 @@ export default function StudentDetail() {
           <TableWrapper>{table}</TableWrapper>
         </Wrapper>
       )}
-    </>
+    </AuthLayout>
   );
 }
 

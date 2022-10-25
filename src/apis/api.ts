@@ -41,16 +41,16 @@ export function loginFetcher(body: { email: string; password: string }) {
   });
 }
 
-interface loadMyInfoProps {
+export interface loadMyInfoProps {
   code: number;
   response: string;
   data: myInfoProps;
   uuid: string;
 }
 
-export function loadMyInfoFetcher(): Promise<loadMyInfoProps> {
-  const accessToken = getLocalStorageValue("token") ?? "";
-
+export function loadMyInfoFetcher(
+  accessToken: string,
+): Promise<loadMyInfoProps> {
   return fetch(`${BASE_URL}/api/members/myInfo`, {
     headers: {
       Authorization: accessToken,

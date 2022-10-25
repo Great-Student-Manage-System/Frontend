@@ -1,3 +1,4 @@
+import AuthLayout from "@components/layouts/AuthLayout";
 import Header from "@components/Main/Header";
 import Graph from "@components/Students/graph";
 import { StudentExamProps } from "@pages/Student/StudentDetail";
@@ -60,7 +61,7 @@ export default function ExamDetail() {
   }, []);
 
   return (
-    <>
+    <AuthLayout>
       <Header />
       {TEST_INFO && (
         <Wrapper>
@@ -85,7 +86,7 @@ export default function ExamDetail() {
           </TableWrapper>
         </Wrapper>
       )}
-    </>
+    </AuthLayout>
   );
 }
 
