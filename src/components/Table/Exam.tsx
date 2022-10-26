@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { examsTypes } from "@recoil/examsRecoil";
 
 const TR = styled.tr`
   height: 100%
@@ -18,14 +19,7 @@ const TD = styled.td`
   }
 `;
 
-interface PropsTypes {
-  examId: number;
-  examName: string;
-  schoolYear: number;
-  subject: string;
-}
-
-const Exam = (props: PropsTypes) => {
+const Exam = (props: examsTypes) => {
   const { examId, examName, schoolYear, subject } = props;
 
   return (

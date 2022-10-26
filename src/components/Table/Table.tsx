@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRecoilValue } from "recoil";
 import Student from "@components/Table/Student";
-import { studentsTypes, studentsAtom } from "@recoil/studentsAtom";
+import { studentSelector, studentsTypes } from "@recoil/studentsRecoil";
 import Exam from "@components/Table/Exam";
-import { examsTypes, examsAtom } from "@recoil/examsAtom";
+import { examSelector, examsTypes } from "@recoil/examsRecoil";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
 
@@ -38,9 +38,10 @@ const TH = styled.th`
 
 export default function Table() {
   const { pathname } = useLocation();
-  const students = useRecoilValue<studentsTypes[]>(studentsAtom);
-  const exams = useRecoilValue<examsTypes[]>(examsAtom);
-
+  const students = useRecoilValue(studentSelector);
+  const exams = useRecoilValue(examSelector);
+  console.log(students);
+  console.log(exams);
   return (
     <>
       <StudentTable hidden={pathname === "/exams"}>
@@ -51,8 +52,8 @@ export default function Table() {
           <TH>선택과목</TH>
           <TH />
         </TR>
-        {students.map((student: studentsTypes) => {
-          const { studentId, name, school, grade, subject } = student;
+        {students.data.map((student: studentsTypes) => {
+          const { studentId, name, school, grade, subjects } = student;
           return (
             <Student
               key={studentId}
@@ -60,7 +61,7 @@ export default function Table() {
               name={name}
               school={school}
               grade={grade}
-              subject={subject}
+              subjects={subjects}
             />
           );
         })}
@@ -71,7 +72,7 @@ export default function Table() {
           <TH>학년</TH>
           <TH>선택과목</TH>
         </TR>
-        {exams.map((exam: examsTypes) => {
+        {exams.data.map((exam: examsTypes) => {
           const { examId, examName, schoolYear, subject } = exam;
           return (
             <Exam

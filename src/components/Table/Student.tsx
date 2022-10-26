@@ -1,6 +1,6 @@
-import React, { useCallback } from "react";
-import { useRecoilState } from "recoil";
-import { studentsTypes, studentsAtom } from "@recoil/studentsAtom";
+import React from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { studentsTypes } from "@recoil/studentsRecoil";
 import styled from "styled-components";
 import { CgMoreO } from "react-icons/cg";
 
@@ -21,28 +21,19 @@ const TD = styled.td`
   }
 `;
 
-interface PropsTypes {
-  studentId: string;
-  name: string;
-  school: string;
-  grade: number;
-  subject: string;
-}
+const Student = (props: studentsTypes) => {
+  const { studentId, name, school, grade, subjects } = props;
 
-const Student = (props: PropsTypes) => {
-  const { studentId, name, school, grade, subject } = props;
-  const [students, setStudents] = useRecoilState<studentsTypes[]>(studentsAtom);
-
-  const deletStudent = useCallback(
-    (studentId: string) => {
-      setStudents(
-        students.filter(
-          (student: studentsTypes) => student.studentId !== studentId,
-        ),
-      );
-    },
-    [setStudents, students],
-  );
+  // const deletStudent = useCallback(
+  //   (studentId: string) => {
+  //     setStudents(
+  //       students.filter(
+  //         (student: studentsTypes) => student.studentId !== studentId,
+  //       ),
+  //     );
+  //   },
+  //   [setStudents, students],
+  // );
 
   return (
     <>
@@ -50,13 +41,13 @@ const Student = (props: PropsTypes) => {
         <TD>{name}</TD>
         <TD>{school}</TD>
         <TD>{grade}학년</TD>
-        <TD>{subject}</TD>
+        <TD>{subjects}</TD>
         <TD>
           <CgMoreO
             className="logo"
             size={22}
             color="#696969"
-            onClick={() => deletStudent(studentId)}
+            onClick={() => null}
           />
         </TD>
       </TR>
