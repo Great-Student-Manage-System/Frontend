@@ -3,7 +3,7 @@ import { getLocalStorageValue } from "@utility/storage";
 import useSWR from "swr";
 import { useState, useEffect } from "react";
 
-interface examProps {
+export interface examProps {
   examId: number;
   examName: string;
   schoolYear: number;
@@ -13,7 +13,7 @@ interface examProps {
 function useExamList(year: string) {
   const accessToken = getLocalStorageValue("token") || "";
 
-  const [result, setResult] = useState([]);
+  const [result, setResult] = useState<examProps[]>([]);
 
   const { data } = useSWR(`/api/exams/${year}`, () =>
     loadExamListFetcher(year, accessToken),
@@ -28,7 +28,7 @@ function useExamList(year: string) {
     }
   }, [data]);
 
-  return result;
+  return { result };
 }
 
 export default useExamList;

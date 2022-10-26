@@ -2,45 +2,110 @@ import { openModalAtom } from "@recoil/atom";
 import { useMemo } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import appendIcon from "@images/Icon/append_Icon.svg";
-import AppendRecordInfo from "./AppendRecordInfo";
-import { currentStudentAtom } from "@recoil/currentStudentInfo";
-import { appendRecordAtom } from "@recoil/appendRecordAtom";
+
+import {
+  currentStudentAtom,
+  currentStudentInfoAtom,
+} from "@recoil/currentStudentInfo";
+import { useSWRConfig } from "swr";
+import useExamList from "@hooks/useExamList";
+import { useState } from "react";
+import { appendStudentRecordFetcher } from "@apis/api";
+import { getLocalStorageValue } from "@utility/storage";
 
 function AppendRecordModal() {
-  const currentStudent = useRecoilValue(currentStudentAtom);
+  const accessToken = getLocalStorageValue("token") ?? "";
+  const {
+    studentId,
+    grade,
+    subject: studentSubject,
+  } = useRecoilValue(currentStudentAtom);
   const setOpenModal = useSetRecoilState<boolean>(openModalAtom);
-  const appendRecordInfo = useRecoilValue(appendRecordAtom);
+  const [appendRecordInfo, setAppendRecordInfo] = useState<{
+    [key: string]: string;
+  }>({});
 
-  const studentInfoForm = useMemo(
-    () => (
-      <AppendRecordInfo
-        schoolYear={currentStudent.grade}
-        subject={currentStudent.subject.split(",")}
-      />
-    ),
-    [],
-  );
+  const { year } = useRecoilValue(currentStudentInfoAtom);
 
-  const appendStuedntSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const { result: examList } = useExamList(year);
+
+  const appendStuedntSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // 여기서 학생 성적 받아서 같이 쏴줘야 함.
-    console.log(appendRecordInfo);
+    const { examId, subject, examScore } = appendRecordInfo;
+    const props = {
+      studentId,
+      accessToken,
+      examId: Number(examId),
+      subject,
+      examScore: Number(examScore),
+    };
+    const data = await appendStudentRecordFetcher(props);
+    console.log(data);
+  };
+
+  const handleOnChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    key: string,
+  ) => {
+    const { value } = e.target;
+    setAppendRecordInfo((cur) => ({ ...cur, [key]: value }));
   };
 
   return (
     <StudentModalWrapper>
       <StudentModalTitle>성적 추가하기</StudentModalTitle>
       <AppendForm onSubmit={appendStuedntSubmit}>
-        {studentInfoForm}
-        <AppendItemButton
+        <StudentInfoWrapper style={{ display: "flex" }}>
+          <div>
+            <StudentInfoLabel>시험</StudentInfoLabel>
+            <StudentInfoSelect
+              onChange={(e) => handleOnChange(e, "examId")}
+              required={true}
+            >
+              {examList.map(({ examId, examName }) => (
+                <option value={examId}>{examName}</option>
+              ))}
+            </StudentInfoSelect>
+          </div>
+          <div>
+            <StudentInfoLabel>학년</StudentInfoLabel>
+            <StudentInfoInput placeholder="학년" value={grade} readOnly />
+          </div>
+          <div>
+            <StudentInfoLabel>선택과목</StudentInfoLabel>
+            <StudentInfoSelect
+              onChange={(e) => handleOnChange(e, "subject")}
+              required={true}
+            >
+              {studentSubject.split(",").map((value) => (
+                <option value={value} selected>
+                  {value}
+                </option>
+              ))}
+            </StudentInfoSelect>
+          </div>
+          <div>
+            <StudentInfoLabel>점수</StudentInfoLabel>
+            {/* /** 선생 값 설정이 된다면 해당 값에 맞춰 선택과목 추가가 되어야 함. */}
+            <StudentInfoInput
+              onChange={(e) => handleOnChange(e, "examScore")}
+              value={appendRecordInfo["appendRecordInfo"]}
+              placeholder="시험 점수"
+              type="number"
+              max={100}
+              min={0}
+              required={true}
+            />
+          </div>
+        </StudentInfoWrapper>
+        {/* <AppendItemButton
           onClick={(e) => {
             e.preventDefault();
           }}
         >
           <img src={appendIcon} alt="추가 이미지" />
           <span>항목추가하기</span>
-        </AppendItemButton>
+        </AppendItemButton> */}
         <SubmitContainer>
           <SubmitCancelButton
             onClick={(e) => {
@@ -83,7 +148,57 @@ const StudentModalTitle = styled.p`
 
   color: #000000;
 `;
+const StudentInfoWrapper = styled.div`
+  display: flex;
 
+  margin: 4rem 0 1.6rem 0;
+`;
+
+const StudentInfoLabel = styled.label`
+  font-style: normal;
+  font-weight: 700;
+  font-size: 1.4rem;
+  line-height: 2.4rem;
+  /* identical to box height, or 171% */
+
+  letter-spacing: -0.25px;
+
+  /* secondary/black */
+
+  color: #000000;
+`;
+
+const StudentInfoInput = styled.input`
+  width: 16rem;
+  height: 4.2rem;
+
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1.4rem;
+  line-height: 2.4rem;
+
+  border: 1px solid var(--grey);
+  border-radius: 6px;
+
+  padding: 0 1.2rem;
+  margin-right: 1.6rem;
+`;
+
+const StudentInfoSelect = styled.select`
+  width: 16rem;
+  height: 4.2rem;
+
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1.4rem;
+  line-height: 2.4rem;
+
+  border: 1px solid var(--grey);
+  border-radius: 6px;
+
+  padding: 0 1.2rem;
+  margin-right: 1.6rem;
+`;
 const AppendItemButton = styled.div`
   display: flex;
   align-items: center;

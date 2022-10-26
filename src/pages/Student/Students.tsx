@@ -10,14 +10,10 @@ import { useEffect } from "react";
 
 import { DETAIL_SUBJECTS, MAIN_SUBJECTS } from "@data/subjectData";
 import AuthLayout from "@components/layouts/AuthLayout";
-import { getLocalStorageValue, removeLocalStorage } from "@utility/storage";
-import { useNavigate } from "react-router-dom";
-import { refreshAccessToken } from "@apis/api";
 
 export default function Students() {
   const { myInfo } = useMyInfo();
   const setMyInfo = useSetRecoilState(myInfoAtom);
-  const navigation = useNavigate();
 
   useEffect(() => {
     if (myInfo?.code === 200) {
@@ -28,7 +24,7 @@ export default function Students() {
           DETAIL_SUBJECTS[data.subject as keyof typeof MAIN_SUBJECTS],
       });
     }
-  }, [myInfo]);
+  }, [myInfo, setMyInfo]);
 
   return (
     <AuthLayout>

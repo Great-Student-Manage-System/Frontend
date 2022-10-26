@@ -1,7 +1,13 @@
 import AuthLayout from "@components/layouts/AuthLayout";
 import Header from "@components/Main/Header";
 import Graph from "@components/Students/graph";
-import { StudentExamProps } from "@pages/Student/StudentDetail";
+import Table from "@components/Students/Table";
+import {
+  SearchExamButton,
+  SearchExamInput,
+  SerachHeader,
+  StudentExamProps,
+} from "@pages/Student/StudentDetail";
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -19,33 +25,48 @@ const TEST_INFO: ExamInfoProps = {
   schoolYear: 1, // 학년
   subject: "사회",
 };
+
+let tempData: StudentExamProps[] = [
+  {
+    name: "6평",
+    score: 88,
+    grade: 3,
+    date: "2022-06-18",
+  },
+  {
+    name: "9평",
+    score: 88,
+    grade: 3,
+    date: "2022-09-03",
+  },
+  {
+    name: "10평",
+    score: 88,
+    grade: 3,
+    date: "2022-10-5",
+  },
+];
+
+const EXAM_COLUMNS = [
+  ["name", "이름"],
+  ["school", "학교"],
+  ["schoolYear", "학년"],
+  ["score", "점수"],
+  ["score", "점수"],
+];
 export default function ExamDetail() {
   const [typedStudent, setTypedStudent] = useState("");
 
   const navigate = useNavigate();
-  let tempData: StudentExamProps[] = [
-    {
-      name: "6평",
-      score: 88,
-      grade: 3,
-      date: "2022-06-18",
-    },
-    {
-      name: "9평",
-      score: 88,
-      grade: 3,
-      date: "2022-09-03",
-    },
-    {
-      name: "10평",
-      score: 88,
-      grade: 3,
-      date: "2022-10-5",
-    },
-  ];
+
   const graph = useMemo(() => {
     return <Graph data={tempData} />;
   }, [tempData]);
+
+  const table = useMemo(() => {
+    return null;
+    // <Table columns={EXAM_COLUMNS} data={recordData} />;
+  }, []);
 
   const goBackHandler = () => {
     navigate("/exams");
@@ -75,14 +96,13 @@ export default function ExamDetail() {
           </SchoolWrapper>
           <GraphWrapper>{graph}</GraphWrapper>
           <TableWrapper>
-            <div>
-              <input
-                value={typedStudent}
-                onChange={(e) => setTypedStudent(e.target.value)}
-              />
-              <button onClick={searchStudent}>검색</button>
-            </div>
-            테이블
+            <SerachHeader>
+              <div>
+                <SearchExamInput placeholder="시험 이름" />
+                <SearchExamButton>검색</SearchExamButton>
+              </div>
+            </SerachHeader>
+            {table}
           </TableWrapper>
         </Wrapper>
       )}

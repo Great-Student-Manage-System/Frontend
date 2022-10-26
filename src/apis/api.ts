@@ -121,3 +121,29 @@ export function loadStudentDetailFetcher({
     accessToken,
   );
 }
+
+interface appendStudentRecordProps {
+  studentId: string;
+  examId: number;
+  subject: string;
+  examScore: number;
+  accessToken: string;
+}
+
+export function appendStudentRecordFetcher(props: appendStudentRecordProps) {
+  console.log(props);
+  const { studentId, examId, subject, examScore } = props;
+  return authHandle(
+    fetch(`${BASE_URL}/api/students/exam/result`, {
+      method: "POST",
+      headers: {
+        Authorization: props.accessToken,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({ studentId, examId, subject, examScore }),
+    }),
+    props.accessToken,
+  );
+}
