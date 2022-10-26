@@ -1,6 +1,6 @@
 import Header from "@components/Main/Header";
 import Graph from "@components/Students/graph";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ReactComponent as Button } from "@images/Icon/left_side_icon.svg";
@@ -9,6 +9,10 @@ import { useSetRecoilState } from "recoil";
 import { currentStudentAtom } from "@recoil/currentStudentInfo";
 import { studentsTypes } from "@recoil/studentsAtom";
 import AuthLayout from "@components/layouts/AuthLayout";
+import useExamList from "@hooks/useExamList";
+import dayjs from "dayjs";
+import useStudentRecord from "@hooks/useStudentRecord";
+import { useSWRConfig } from "swr";
 
 interface STUDENT_INFO {
   studentId: string;
@@ -26,10 +30,10 @@ export interface StudentExamProps extends ObjectType {
 }
 
 const TEST_INFO: studentsTypes = {
-  studentId: "150364",
+  studentId: "2",
   name: "김민수",
   school: "지상고등학교",
-  grade: 1,
+  grade: 3,
   subject: "물리1, 화학1",
 };
 
@@ -66,13 +70,38 @@ const STUDENT_COLUMNS = [
   ["score", "점수"],
 ];
 
+/**
+ *
+ * 1. 상세보기 클릭했을 떄, 전역 상태로 CurrentStudent 값 추가
+ * 2. 해당 값에 있는 data들을 바탕으로 값을 그림
+ * 3. ({studentId} {subject} {year}) => {  "recordId": 1,"examId": 1,"score": 43} --> 학생 성적을 통해 과목에 대한 시험 그래프 조회
+ * 4. 시험 목록역시 조회해야 함 -> 해당 학생에게 알맞는 시험정보가 따로있기 때문 (학생 성적 추가시에 필요)
+ *  -> 3,4에서 얻은 examId와 시험 목록 관련 정보를 합해서 StudentExamProps을 만들어야 함
+ * 5. 학생 성적 변경시
+ */
+
 export default function StudentDetail() {
   const subjects = TEST_INFO?.subject.split(",");
-  // 학생 성적들이 배열로 추가되어 있어야 함.
-  // const [subject, setSubject] = useState(subjects[0]);
-  // console.log(subjects);
+  const [curYear, setCurYear] = useState(dayjs().format("YYYY"));
+  const { studentId } = TEST_INFO;
+
+  const { mutate } = useSWRConfig();
+
+  const currentStudentInfo = useStudentRecord({
+    studentId,
+    year: curYear,
+    subject: subjects[0],
+  });
+  const examList = useExamList(curYear);
+
+  console.log(currentStudentInfo, examList);
+
   const navigate = useNavigate();
   const setCurrentStudent = useSetRecoilState(currentStudentAtom);
+
+  const selectChangeHandler = useCallback((e: any) => {
+    console.log(e);
+  }, []);
 
   tempData = tempData.map((data) => ({
     ...data,
@@ -92,8 +121,6 @@ export default function StudentDetail() {
   };
 
   useEffect(() => {
-    // console.log("222");
-    // if (!studentInfo) navigate("/");
     setCurrentStudent(TEST_INFO);
   }, []);
 
@@ -114,14 +141,20 @@ export default function StudentDetail() {
             <InfoBox>
               {TEST_INFO.grade < 4 ? `${TEST_INFO.grade}학년` : "N수생"}
             </InfoBox>
-            <InfoSelect style={{ width: "17.6rem" }}>
+            <InfoSelect
+              onChange={selectChangeHandler}
+              style={{ width: "17.6rem" }}
+            >
               {subjects?.map((subject) => (
                 <option>{subject}</option>
               ))}
             </InfoSelect>
           </SchoolWrapper>
           <GraphWrapper>
-            <InfoSelect style={{ width: "9.1rem" }}>
+            <InfoSelect
+              onChange={selectChangeHandler}
+              style={{ width: "9.1rem" }}
+            >
               <option>2022</option>
               <option>2021</option>
               <option>2020</option>

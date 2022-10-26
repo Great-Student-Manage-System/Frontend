@@ -1,8 +1,8 @@
 import { myInfoProps } from "@recoil/myInfoatom";
-import { getLocalStorageValue } from "@utility/storage";
 import { userInfoProps } from "@utility/types";
+import { authHandle } from "./authHandle";
 
-export const BASE_URL = "http://great.robinjoon.xyz:8080";
+export const BASE_URL = "https://great.robinjoon.xyz";
 
 export function signUpFetcher(body: userInfoProps): Promise<any> {
   return fetch(`${BASE_URL}/api/members/join`, {
@@ -29,16 +29,31 @@ export function confirmEmailNumber(email: string, number: string) {
   );
 }
 
-export function loginFetcher(body: { email: string; password: string }) {
-  return fetch(`${BASE_URL}/api/members/login`, {
+export async function loginFetcher(body: { email: string; password: string }) {
+  return await fetch(`${BASE_URL}/api/members/login`, {
     method: "POST",
     headers: {
+      Accept: "application/json",
       "Content-Type": "application/json",
     },
+    credentials: "include",
     body: JSON.stringify(body),
   }).then((response) => {
+    console.log(response, "login");
     return response.json();
   });
+}
+
+export function refreshAccessToken(accessToken: string) {
+  return fetch(`${BASE_URL}/api/members/login`, {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify({ accessToken: `Bearer ${accessToken}` }),
+  }).then((response) => response.json());
 }
 
 export interface loadMyInfoProps {
@@ -51,9 +66,58 @@ export interface loadMyInfoProps {
 export function loadMyInfoFetcher(
   accessToken: string,
 ): Promise<loadMyInfoProps> {
-  return fetch(`${BASE_URL}/api/members/myInfo`, {
-    headers: {
-      Authorization: accessToken,
-    },
-  }).then((response) => response.json());
+  return authHandle(
+    fetch(`${BASE_URL}/api/members/myInfo`, {
+      headers: {
+        Authorization: accessToken,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    }),
+    accessToken,
+  );
+}
+
+export function loadExamListFetcher(year: string, accessToken: string) {
+  return authHandle(
+    fetch(`${BASE_URL}/api/exams/${year}`, {
+      headers: {
+        Authorization: accessToken,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    }),
+    accessToken,
+  );
+}
+
+export interface studentDetailProps {
+  studentId: string;
+  subject: string;
+  year: string;
+}
+
+export interface loadStudentProps extends studentDetailProps {
+  accessToken: string;
+}
+
+export function loadStudentDetailFetcher({
+  studentId,
+  subject,
+  year,
+  accessToken,
+}: loadStudentProps) {
+  return authHandle(
+    fetch(`${BASE_URL}/api/students/${studentId}/${subject}/${year}`, {
+      headers: {
+        Authorization: accessToken,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      credentials: "include",
+    }),
+    accessToken,
+  );
 }

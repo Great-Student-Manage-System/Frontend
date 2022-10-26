@@ -7,12 +7,9 @@ import ExamDetail from "@pages/Exam/ExamDetail";
 import Mypage from "@pages/Mypage";
 import Login from "@pages/Auth/Login";
 import Signup from "@pages/Auth/Signup";
-import { useRecoilValue } from "recoil";
-import { accessTokenAtom } from "@recoil/accessTokenAtom";
+import { getLocalStorageValue } from "@utility/storage";
 
 function URLRoutes() {
-  const accessToken = useRecoilValue(accessTokenAtom);
-
   return (
     <BrowserRouter>
       <Routes>
@@ -21,13 +18,17 @@ function URLRoutes() {
         <Route
           path="/students"
           element={
-            accessToken ? <Students /> : <Navigate replace to={"/auth/login"} />
+            getLocalStorageValue("token") ? (
+              <Students />
+            ) : (
+              <Navigate replace to={"/auth/login"} />
+            )
           }
         />
         <Route
           path="/students/:id"
           element={
-            accessToken ? (
+            getLocalStorageValue("token") ? (
               <StudentDetail />
             ) : (
               <Navigate replace to={"/auth/login"} />
@@ -37,13 +38,17 @@ function URLRoutes() {
         <Route
           path="/exams"
           element={
-            accessToken ? <Exams /> : <Navigate replace to={"/auth/login"} />
+            getLocalStorageValue("token") ? (
+              <Exams />
+            ) : (
+              <Navigate replace to={"/auth/login"} />
+            )
           }
         />
         <Route
           path="/exams/:id"
           element={
-            accessToken ? (
+            getLocalStorageValue("token") ? (
               <ExamDetail />
             ) : (
               <Navigate replace to={"/auth/login"} />
@@ -53,7 +58,11 @@ function URLRoutes() {
         <Route
           path="/mypage"
           element={
-            accessToken ? <Mypage /> : <Navigate replace to={"/auth/login"} />
+            getLocalStorageValue("token") ? (
+              <Mypage />
+            ) : (
+              <Navigate replace to={"/auth/login"} />
+            )
           }
         />
 

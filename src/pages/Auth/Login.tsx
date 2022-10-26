@@ -2,13 +2,11 @@ import { loginFetcher } from "@apis/api";
 import GoogleLoginButton from "@components/Auth/GoogleLogin";
 import Header from "@components/Auth/Header";
 import KaKaoLogin, { LoginWayButton } from "@components/Auth/KaKaoLogin";
-import { accessTokenAtom } from "@recoil/accessTokenAtom";
 import { setLocalStorage } from "@utility/storage";
 import { emailValidation, passwordValidation } from "@utility/validation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { AuthForm } from "./Signup";
 
@@ -25,7 +23,6 @@ interface validationProps {
 export default function Login() {
   const { register, handleSubmit } = useForm();
   const [isEmailLogin, setIsEmailLogin] = useState(false);
-  const setAccessToken = useSetRecoilState(accessTokenAtom);
   const navigation = useNavigate();
 
   const [isEmailValidation, setIsEmailValidation] = useState(false);
@@ -43,11 +40,11 @@ export default function Login() {
   const loginSubmitHandler = (data: formProps) => {
     loginFetcher({ email: data["email"], password: data["password"] })
       .then((data) => {
+        console.log(data, "LoginHAndler");
         if (data.code === 200) {
           const { accessToken } = data.data;
           const token = accessToken.split(" ")[1];
           setLocalStorage("token", token);
-          setAccessToken(token);
           navigation("/students");
         } else {
           alert(data.message);

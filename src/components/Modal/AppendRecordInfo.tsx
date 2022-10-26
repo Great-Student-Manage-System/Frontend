@@ -3,8 +3,10 @@ import {
   appendRecordInfoProps,
   initialRecordInfo,
 } from "@recoil/appendRecordAtom";
+import { currentStudentAtom } from "@recoil/currentStudentInfo";
+import { myInfoAtom } from "@recoil/myInfoatom";
 import { useState, useEffect } from "react";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 interface StudentStandardInfo {
@@ -16,6 +18,9 @@ function AppendRecordInfo({ schoolYear, subject }: StudentStandardInfo) {
   const [infoObject, setInfoObject] =
     useState<appendRecordInfoProps>(initialRecordInfo);
   const setAppendRecord = useSetRecoilState(appendRecordAtom);
+
+  const currentStudent = useRecoilValue(currentStudentAtom);
+  const myInfo = useRecoilValue(myInfoAtom);
 
   useEffect(() => {
     setAppendRecord((prev) => ({ ...prev, infoObject }));

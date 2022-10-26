@@ -9,6 +9,8 @@ function useMyInfo() {
     loadMyInfoFetcher(accessToken),
   );
 
+  console.log(myInfo, error);
+
   return {
     myInfo,
     isLoading: !error && !myInfo,
