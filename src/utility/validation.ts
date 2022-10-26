@@ -10,7 +10,3 @@ export const passwordValidation = (password: string): boolean => {
     /^.*(?=^.{8,20}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[~!@#$%^&*()+|=]).*$/;
   return regExp.test(password);
 };
-
-export const nickNameValidation = (nickName: string): boolean => {
-  return true;
-};

@@ -3,18 +3,15 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import ConfirmButton from "@components/Auth/ConfirmButton";
 import { useForm } from "react-hook-form";
-import {
-  emailValidation,
-  passwordValidation,
-  nickNameValidation,
-} from "@utility/validation";
+import { emailValidation, passwordValidation } from "@utility/validation";
 import dayjs from "dayjs";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { userInfoProps } from "@utility/types";
 import {
   sendEmailConfirmNumber,
   signUpFetcher,
   confirmEmailNumber,
+  checkNickName,
 } from "@apis/api";
 import { useNavigate } from "react-router-dom";
 import { MAIN_SUBJECTS } from "@data/subjectData";
@@ -32,6 +29,11 @@ export default function Signup() {
   const [rePasswordValue, setRePasswordValue] = useState("");
   const [nickNameValue, setNickNameValue] = useState("");
   const [subject, setSubject] = useState("");
+
+  const [nickNameStatus, setNickNameStatus] = useState<{
+    code: number;
+    message: string;
+  } | null>(null);
 
   const [confirmTime, setConfirmTime] = useState(CONFIRM_TIME);
 
@@ -59,10 +61,22 @@ export default function Signup() {
     },
   };
 
+  const nickNameMessage = useMemo(() => {
+    return nickNameStatus !== null ? (
+      <WarningSpan>{nickNameStatus.message}</WarningSpan>
+    ) : null;
+  }, [nickNameStatus]);
+
   const nickNameConfirmProperty = {
     buttonTitle: "중복확인",
-    buttonHandler: (e: React.MouseEvent) => {
+    buttonHandler: async (e: React.MouseEvent) => {
       e.preventDefault();
+      console.log(nickNameValue);
+      const data = await checkNickName(nickNameValue);
+      setNickNameStatus({
+        code: data.code,
+        message: data.message ?? data.response,
+      });
     },
   };
 
@@ -242,16 +256,15 @@ export default function Signup() {
                 {...register("nickName", {
                   onChange: (e) => {
                     const { value } = e.target;
-                    setNickNameValue(nickNameValue);
-                    setIsNickNameValidate(nickNameValidation(value));
+                    setNickNameValue(value);
+                    setIsNickNameValidate(value.length);
+                    setNickNameStatus(null);
                   },
                   required: true,
                   value: nickNameValue,
                 })}
               />
-              {isNickNameValidate || nickNameValue.length === 0 ? null : (
-                <WarningSpan>올바른 닉네임을 입력하세요</WarningSpan>
-              )}
+              {nickNameMessage}
             </InputWrap>
             <ConfirmButton
               isValidation={isNickNameValidate}
@@ -289,7 +302,8 @@ export default function Signup() {
             !isPasswordValidate ||
             !isRePasswordValidate ||
             !isSubjectValidate ||
-            !isConfirmedEmail
+            !isConfirmedEmail ||
+            nickNameStatus?.code !== 200
           }
         >
           동의하고 회원가입하기

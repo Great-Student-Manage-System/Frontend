@@ -1,6 +1,6 @@
 import { myInfoProps } from "@recoil/myInfoatom";
 import { userInfoProps } from "@utility/types";
-import { authHandle } from "./authHandle";
+import { authHandle } from "@apis/authHandle";
 
 export const BASE_URL = "https://great.robinjoon.xyz";
 
@@ -25,6 +25,13 @@ export function sendEmailConfirmNumber(email: string) {
 
 export function confirmEmailNumber(email: string, number: string) {
   return fetch(`${BASE_URL}/api/members/join/${email}/${number}`).then(
+    (response) => response.json(),
+  );
+}
+
+export function checkNickName(nickName: string) {
+  console.log(nickName);
+  return fetch(`${BASE_URL}/api/members/join/nickNameCheck/${nickName}`).then(
     (response) => response.json(),
   );
 }

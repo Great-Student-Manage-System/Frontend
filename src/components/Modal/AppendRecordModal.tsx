@@ -1,13 +1,11 @@
 import { openModalAtom } from "@recoil/atom";
-import { useMemo } from "react";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import {
   currentStudentAtom,
   currentStudentInfoAtom,
 } from "@recoil/currentStudentInfo";
-import { useSWRConfig } from "swr";
 import useExamList from "@hooks/useExamList";
 import { useState } from "react";
 import { appendStudentRecordFetcher } from "@apis/api";
