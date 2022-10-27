@@ -16,7 +16,7 @@ function ModifyRecordModal() {
     { recordId, examId, examScore, studentId, schoolYear },
     setModifyRecordInfo,
   ] = useRecoilState(modifyExamRecordAtom);
-  console.log(recordId, examId, studentId);
+
   const setOpenModal = useSetRecoilState<boolean>(openModalAtom);
 
   const { subject, year } = useRecoilValue(currentStudentInfoAtom);

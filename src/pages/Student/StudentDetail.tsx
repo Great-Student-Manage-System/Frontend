@@ -50,7 +50,7 @@ export default function StudentDetail() {
     subject: subject === "" ? subjects.split(",")[0] : subject,
     year,
   });
-  console.log(studentRecord);
+
   const { result: examList } = useExamList(year);
 
   useEffect(() => {
@@ -178,7 +178,7 @@ export default function StudentDetail() {
   );
 }
 
-const NoDataDiv = styled.div`
+export const NoDataDiv = styled.div`
   width: 89.5rem;
   height: 35.6rem;
   display: flex;

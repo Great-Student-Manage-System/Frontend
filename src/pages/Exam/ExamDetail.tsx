@@ -1,16 +1,22 @@
 import AuthLayout from "@components/layouts/AuthLayout";
 import Header from "@components/Main/Header";
-import Graph from "@components/Students/graph";
+import { ReactComponent as Button } from "@images/Icon/left_side_icon.svg";
+import Graph from "@components/Exams/graph";
 import Table from "@components/Students/Table";
+
 import {
+  NoDataDiv,
   SearchExamButton,
   SearchExamInput,
   SerachHeader,
-  StudentExamProps,
 } from "@pages/Student/StudentDetail";
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useRecoilValue } from "recoil";
+import { currentExamAtom } from "@recoil/currentExamInfo";
+import useGetStudentExam from "@hooks/useGetStudentExam";
+import useGetExamInfo from "@hooks/useGetExamInfo";
 
 interface ExamInfoProps {
   examId: number;
@@ -19,87 +25,98 @@ interface ExamInfoProps {
   subject: string;
 }
 
-const TEST_INFO: ExamInfoProps = {
-  examId: 23141,
-  examName: "6평",
-  schoolYear: 1, // 학년
-  subject: "사회",
-};
-
-let tempData: StudentExamProps[] = [
-  {
-    name: "6평",
-    score: 88,
-    grade: 3,
-    date: "2022-06-18",
-  },
-  {
-    name: "9평",
-    score: 88,
-    grade: 3,
-    date: "2022-09-03",
-  },
-  {
-    name: "10평",
-    score: 88,
-    grade: 3,
-    date: "2022-10-5",
-  },
-];
-
 const EXAM_COLUMNS = [
   ["name", "이름"],
   ["school", "학교"],
   ["schoolYear", "학년"],
-  [],
-  ["score", "점수"],
+  ["score", "원점수"],
+  ["grade", "등급"],
+  ["", ""],
 ];
-export default function ExamDetail() {
-  const [typedStudent, setTypedStudent] = useState("");
 
+export default function ExamDetail() {
+  const [searchedStudent, setSearchedStudent] = useState("");
+  const { examId, examName, schoolYear, subject } =
+    useRecoilValue(currentExamAtom);
+
+  const { result: studentRecord } = useGetStudentExam(examId);
+  const { result: examInfo } = useGetExamInfo(examId);
   const navigate = useNavigate();
 
   const graph = useMemo(() => {
-    return null;
-    // return <Graph data={tempData} />;
-  }, [tempData]);
+    if (studentRecord.length === 0)
+      return <NoDataDiv>데이터가 없습니다.</NoDataDiv>;
+    if (examInfo !== undefined) {
+      const test = new Array(20).fill({}).map(function (cur, index) {
+        return {
+          score: (index + 1) * 5,
+          students: [],
+          length: 0,
+        };
+      });
+
+      const addedSchoolYearRecord = studentRecord.map((data) => ({
+        ...data,
+        schoolYear: examInfo.schoolYear,
+      }));
+      const sortedData =
+        searchedStudent === ""
+          ? addedSchoolYearRecord
+          : addedSchoolYearRecord.filter((data: any) =>
+              data.name.includes(searchedStudent),
+            );
+      return <Graph data={test} />;
+    }
+  }, [examInfo, searchedStudent, studentRecord]);
 
   const table = useMemo(() => {
-    return null;
-    // <Table columns={EXAM_COLUMNS} data={recordData} />;
-  }, []);
+    if (studentRecord.length === 0)
+      return <NoDataDiv>데이터가 없습니다.</NoDataDiv>;
+    if (examInfo !== undefined) {
+      const addedSchoolYearRecord = studentRecord.map((data) => ({
+        ...data,
+        schoolYear: examInfo.schoolYear,
+      }));
+      const sortedData =
+        searchedStudent === ""
+          ? addedSchoolYearRecord
+          : addedSchoolYearRecord.filter((data: any) =>
+              data.name.includes(searchedStudent),
+            );
+
+      return <Table columns={EXAM_COLUMNS} data={sortedData} />;
+    }
+  }, [examInfo, searchedStudent, studentRecord]);
 
   const goBackHandler = () => {
     navigate("/exams");
   };
 
-  const searchStudent = () => {
-    console.log(typedStudent);
-  };
-
-  useEffect(() => {
-    // console.log("222");
-    // if (!studentInfo) navigate("/");
-  }, []);
-
   return (
     <AuthLayout>
       <Header />
-      {TEST_INFO && (
+      {examId && (
         <Wrapper>
           <HeadWrapper>
-            <BackButton onClick={goBackHandler}>뒤로가기</BackButton>
-            <NameSpan>{TEST_INFO.examName}</NameSpan>
+            <Button
+              onClick={goBackHandler}
+              style={{ position: "absolute", left: "-25px", top: "5px" }}
+            />{" "}
+            <NameSpan>{examName}</NameSpan>
           </HeadWrapper>
           <SchoolWrapper>
-            <InfoBox>{TEST_INFO.schoolYear}</InfoBox>
-            <InfoBox>{TEST_INFO.subject}</InfoBox>
+            <InfoBox>{schoolYear}학년</InfoBox>
+            <InfoBox>{subject}</InfoBox>
           </SchoolWrapper>
           <GraphWrapper>{graph}</GraphWrapper>
           <TableWrapper>
             <SerachHeader>
               <div>
-                <SearchExamInput placeholder="시험 이름" />
+                <SearchExamInput
+                  placeholder="학생 이름"
+                  value={searchedStudent}
+                  onChange={(e) => setSearchedStudent(e.target.value)}
+                />
                 <SearchExamButton>검색</SearchExamButton>
               </div>
             </SerachHeader>
@@ -117,12 +134,6 @@ const Wrapper = styled.div`
 
 const HeadWrapper = styled.div`
   position: relative;
-`;
-
-const BackButton = styled.button`
-  position: absolute;
-  left: -72px;
-  top: 5px;
 `;
 const NameSpan = styled.span`
   font-style: normal;

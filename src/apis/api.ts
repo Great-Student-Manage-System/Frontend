@@ -178,7 +178,7 @@ interface modifyStudentRecordProps {
 }
 
 export function modifyStudentRecordFetcher(props: modifyStudentRecordProps) {
-  const { studentId, examId, recordId, examScore, accessToken } = props;
+  const { studentId, examId, recordId, examResult, accessToken } = props;
   return authHandle(
     fetch(`${BASE_URL}/api/students/${studentId}`, {
       method: "PATCH",
@@ -191,8 +191,39 @@ export function modifyStudentRecordFetcher(props: modifyStudentRecordProps) {
       body: JSON.stringify({
         examId,
         recordId,
-        examScore,
+        examResult,
       }),
+    }),
+    accessToken,
+  );
+}
+
+export function loadStudentExamInfoFetcher(
+  examId: number,
+  accessToken: string,
+) {
+  return authHandle(
+    fetch(`${BASE_URL}/api/students/exam/${examId}`, {
+      headers: {
+        Authorization: accessToken,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      credentials: "include",
+    }),
+    accessToken,
+  );
+}
+
+export function loadExamInfoFetcher(examId: number, accessToken: string) {
+  return authHandle(
+    fetch(`${BASE_URL}/api/exam/${examId}`, {
+      headers: {
+        Authorization: accessToken,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      credentials: "include",
     }),
     accessToken,
   );

@@ -1,6 +1,6 @@
 import { examProps } from "@hooks/useExamList";
 import { studentRecordProps } from "@hooks/useStudentRecord";
-import React, { useMemo, useCallback } from "react";
+import React, { useCallback } from "react";
 import {
   LineChart,
   Line,
@@ -9,16 +9,18 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  BarChart,
+  Bar,
 } from "recharts";
 import styled from "styled-components";
 
-interface temp extends studentRecordProps, examProps {}
-
-interface GraphProps<T extends temp> {
+interface GraphProps<T> {
   data: T[];
 }
 
-function Graph<T extends temp>({ data }: GraphProps<T>) {
+function Graph<T>({ data }: GraphProps<T>) {
+  console.log(data);
+
   const CustomTooltip = useCallback(({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       const { payload: examInfo } = payload[0];
@@ -36,30 +38,24 @@ function Graph<T extends temp>({ data }: GraphProps<T>) {
 
   return (
     <div style={{ marginTop: "10px" }}>
-      <LineChart
+      <BarChart
         width={895}
         height={356}
         data={data}
         margin={{
           top: 5,
           right: 30,
-          left: 0,
+          left: 20,
           bottom: 5,
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="examDate" />
-        <YAxis />
-        <Tooltip content={<CustomTooltip />} />
+        <XAxis dataKey="score" />
+        <YAxis dataKey="length" />
+        <Tooltip />
         <Legend />
-        <Line
-          type="monotone"
-          dataKey="score"
-          stroke={"#319CEA"}
-          activeDot={{ r: 8 }}
-        />
-        <Line type="monotone" dataKey="grade" stroke="#82ca9d" />
-      </LineChart>
+        <Bar dataKey="숫자" fill="#319CEA" />
+      </BarChart>
     </div>
   );
 }
