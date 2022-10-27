@@ -51,7 +51,6 @@ export default function Signup() {
       e.preventDefault();
       sendEmailConfirmNumber(emailValue)
         .then((data) => {
-          console.log(data);
           if (data.code === 200) setIsEmailConfirmInput(true);
           else alert(data.message);
         })
@@ -71,7 +70,6 @@ export default function Signup() {
     buttonTitle: "중복확인",
     buttonHandler: async (e: React.MouseEvent) => {
       e.preventDefault();
-      console.log(nickNameValue);
       const data = await checkNickName(nickNameValue);
       setNickNameStatus({
         code: data.code,

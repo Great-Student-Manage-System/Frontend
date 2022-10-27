@@ -40,7 +40,6 @@ export default function Login() {
   const loginSubmitHandler = (data: formProps) => {
     loginFetcher({ email: data["email"], password: data["password"] })
       .then((data) => {
-        console.log(data, "LoginHAndler");
         if (data.code === 200) {
           const { accessToken } = data.data;
           const token = accessToken.split(" ")[1];

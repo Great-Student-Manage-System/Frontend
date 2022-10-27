@@ -19,8 +19,6 @@ interface GraphProps<T extends temp> {
 }
 
 function Graph<T extends temp>({ data }: GraphProps<T>) {
-  console.log(data);
-
   const CustomTooltip = useCallback(({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       const { payload: examInfo } = payload[0];

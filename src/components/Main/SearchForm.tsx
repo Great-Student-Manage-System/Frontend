@@ -2,6 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
 import { GrAdd } from "react-icons/gr";
+import { studentSelector } from "@recoil/studentsRecoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { modalState, openModalAtom } from "@recoil/atom";
+import { currentModal } from "@data/currentModalState";
 
 const FormWrapper = styled.div`
   width: 100%;
@@ -89,16 +93,21 @@ const Add = styled.button`
 
 export default function SearchForm() {
   const { pathname } = useLocation();
+  const students = useRecoilValue(studentSelector);
+  const setOpenModal = useSetRecoilState(openModalAtom);
+  const setModalState = useSetRecoilState(modalState);
 
   return (
     <>
       <FormWrapper>
         <TextWrapper>
           <Text hidden={pathname === "/exams"}>학생</Text>
-          <TextS hidden={pathname === "/exams"}>n명의 학생</TextS>
+          <TextS hidden={pathname === "/exams"}>
+            {students ? students.data.length : 0}명의 학생
+          </TextS>
         </TextWrapper>
         <Text hidden={pathname === "/students"}>시험</Text>
-        <Form>
+        <Form hidden={pathname === "/exams"}>
           <Select>
             <option>학년</option>
             <option value={1}>1학년</option>
@@ -112,12 +121,38 @@ export default function SearchForm() {
             <option>생명과학</option>
             <option>지구과학</option>
           </Select>
-          <Input placeholder="학생이름"></Input>
+          <Input placeholder="학생 이름"></Input>
           <Search>검색</Search>
-          <Add hidden={pathname === "/exams"}>
+          <Add
+            onClick={() => {
+              setOpenModal(true);
+              setModalState(currentModal.APPEND_STUDENT);
+            }}
+          >
             <GrAdd className="add" />
             학생추가하기
           </Add>
+        </Form>
+        <Form hidden={pathname === "/students"}>
+          <Select>
+            <option>년도</option>
+            <option value={2022}>2022년</option>
+          </Select>
+          <Select>
+            <option>학년</option>
+            <option value={1}>1학년</option>
+            <option value={2}>2학년</option>
+            <option value={3}>3학년</option>
+          </Select>
+          <Select>
+            <option>선택과목</option>
+            <option>물리</option>
+            <option>화학</option>
+            <option>생명과학</option>
+            <option>지구과학</option>
+          </Select>
+          <Input placeholder="시험 이름"></Input>
+          <Search>검색</Search>
         </Form>
       </FormWrapper>
     </>

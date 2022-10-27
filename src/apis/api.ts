@@ -1,6 +1,7 @@
 import { myInfoProps } from "@recoil/myInfoatom";
 import { userInfoProps } from "@utility/types";
 import { authHandle } from "@apis/authHandle";
+import { stringOrnumber } from "@recoil/modifyExamRecordAtom";
 
 export const BASE_URL = "https://great.robinjoon.xyz";
 
@@ -30,7 +31,6 @@ export function confirmEmailNumber(email: string, number: string) {
 }
 
 export function checkNickName(nickName: string) {
-  console.log(nickName);
   return fetch(`${BASE_URL}/api/members/join/nickNameCheck/${nickName}`).then(
     (response) => response.json(),
   );
@@ -46,7 +46,6 @@ export async function loginFetcher(body: { email: string; password: string }) {
     credentials: "include",
     body: JSON.stringify(body),
   }).then((response) => {
-    console.log(response, "login");
     return response.json();
   });
 }
@@ -75,6 +74,20 @@ export function loadMyInfoFetcher(
 ): Promise<loadMyInfoProps> {
   return authHandle(
     fetch(`${BASE_URL}/api/members/myInfo`, {
+      headers: {
+        Authorization: accessToken,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    }),
+    accessToken,
+  );
+}
+
+export function loadStudentListFetcher(page: string, accessToken: string) {
+  return authHandle(
+    fetch(`${BASE_URL}/api/students/${page}`, {
       headers: {
         Authorization: accessToken,
         Accept: "application/json",
@@ -138,7 +151,6 @@ interface appendStudentRecordProps {
 }
 
 export function appendStudentRecordFetcher(props: appendStudentRecordProps) {
-  console.log(props);
   const { studentId, examId, subject, examScore } = props;
   return authHandle(
     fetch(`${BASE_URL}/api/students/exam/result`, {
@@ -149,8 +161,40 @@ export function appendStudentRecordFetcher(props: appendStudentRecordProps) {
         Accept: "application/json",
       },
       credentials: "include",
-      body: JSON.stringify({ studentId, examId, subject, examScore }),
+      body: JSON.stringify({
+        studentId,
+        examId,
+        subject,
+        examScore,
+      }),
     }),
     props.accessToken,
+  );
+}
+
+interface modifyStudentRecordProps {
+  [key: string]: stringOrnumber;
+  accessToken: string;
+}
+
+export function modifyStudentRecordFetcher(props: modifyStudentRecordProps) {
+  const { studentId, examId, recordId, examScore, accessToken } = props;
+  return authHandle(
+    fetch(`${BASE_URL}/api/students/${studentId}`, {
+      method: "PATCH",
+      headers: {
+        Authorization: accessToken,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        studentId,
+        examId,
+        recordId,
+        examScore,
+      }),
+    }),
+    accessToken,
   );
 }

@@ -1,50 +1,43 @@
 import { openModalAtom } from "@recoil/atom";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import {
-  currentStudentAtom,
-  currentStudentInfoAtom,
-} from "@recoil/currentStudentInfo";
+import { currentStudentInfoAtom } from "@recoil/currentStudentInfo";
 import useExamList from "@hooks/useExamList";
-import { useState } from "react";
-import { appendStudentRecordFetcher } from "@apis/api";
+import { modifyStudentRecordFetcher } from "@apis/api";
 import { getLocalStorageValue } from "@utility/storage";
+import { modifyExamRecordAtom } from "@recoil/modifyExamRecordAtom";
 import { useSWRConfig } from "swr";
 
-function AppendRecordModal() {
+function ModifyRecordModal() {
   const accessToken = getLocalStorageValue("token") ?? "";
-
   const { mutate } = useSWRConfig();
-
-  const { studentId, grade, subjects } = useRecoilValue(currentStudentAtom);
-  const studentSubject = subjects.split(",");
+  const [
+    { recordId, examId, examScore, studentId, schoolYear },
+    setModifyRecordInfo,
+  ] = useRecoilState(modifyExamRecordAtom);
 
   const setOpenModal = useSetRecoilState<boolean>(openModalAtom);
-  const [appendRecordInfo, setAppendRecordInfo] = useState<{
-    [key: string]: string;
-  }>({ subject: studentSubject[0] });
 
-  const { year } = useRecoilValue(currentStudentInfoAtom);
+  const { subject, year } = useRecoilValue(currentStudentInfoAtom);
 
   const { result: examList } = useExamList(year);
 
-  const appendStuedntSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const modifyStuedntSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { examId, subject, examScore } = appendRecordInfo;
     const props = {
-      studentId,
       accessToken,
-      examId: Number(examId),
-      subject,
-      examScore: Number(examScore),
+      examScore,
+      recordId,
+      examId,
+      studentId,
     };
-    const data = await appendStudentRecordFetcher(props);
-    if (data.code === 400) {
-      alert(data.message);
-    } else if (data.code === 201) {
+    const data = await modifyStudentRecordFetcher(props);
+    if (data && data.code >= 200) {
       alert(data.response);
-      mutate(`/api/students/${studentId}/${subject}/${year}`);
+      mutate(`/api/exams/${year}`);
+    } else if (data && data.code >= 400) {
+      alert(data.response);
     }
     setOpenModal(false);
   };
@@ -54,13 +47,13 @@ function AppendRecordModal() {
     key: string,
   ) => {
     const { value } = e.target;
-    setAppendRecordInfo((cur) => ({ ...cur, [key]: value }));
+    setModifyRecordInfo((cur) => ({ ...cur, [key]: value }));
   };
 
   return (
     <StudentModalWrapper>
-      <StudentModalTitle>성적 추가하기</StudentModalTitle>
-      <AppendForm onSubmit={appendStuedntSubmit}>
+      <StudentModalTitle>성적 수정하기</StudentModalTitle>
+      <AppendForm onSubmit={modifyStuedntSubmit}>
         <StudentInfoWrapper style={{ display: "flex" }}>
           <div>
             <StudentInfoLabel>시험</StudentInfoLabel>
@@ -75,25 +68,17 @@ function AppendRecordModal() {
           </div>
           <div>
             <StudentInfoLabel>학년</StudentInfoLabel>
-            <StudentInfoInput placeholder="학년" value={grade} readOnly />
+            <StudentInfoInput placeholder="학년" value={schoolYear} readOnly />
           </div>
           <div>
             <StudentInfoLabel>선택과목</StudentInfoLabel>
-            <StudentInfoSelect
-              onChange={(e) => handleOnChange(e, "subject")}
-              required={true}
-            >
-              {studentSubject.map((value: string) => (
-                <option value={value}>{value}</option>
-              ))}
-            </StudentInfoSelect>
+            <StudentInfoInput placeholder="과목" value={subject} readOnly />
           </div>
           <div>
             <StudentInfoLabel>점수</StudentInfoLabel>
-            {/* /** 선생 값 설정이 된다면 해당 값에 맞춰 선택과목 추가가 되어야 함. */}
             <StudentInfoInput
               onChange={(e) => handleOnChange(e, "examScore")}
-              value={appendRecordInfo["examScore"]}
+              value={examScore}
               placeholder="시험 점수"
               type="number"
               max={100}
@@ -102,14 +87,6 @@ function AppendRecordModal() {
             />
           </div>
         </StudentInfoWrapper>
-        {/* <AppendItemButton
-          onClick={(e) => {
-            e.preventDefault();
-          }}
-        >
-          <img src={appendIcon} alt="추가 이미지" />
-          <span>항목추가하기</span>
-        </AppendItemButton> */}
         <SubmitContainer>
           <SubmitCancelButton
             onClick={(e) => {
@@ -126,7 +103,7 @@ function AppendRecordModal() {
   );
 }
 
-export default AppendRecordModal;
+export default ModifyRecordModal;
 
 const StudentModalWrapper = styled.div`
   width: 75.7rem;
@@ -202,20 +179,6 @@ const StudentInfoSelect = styled.select`
 
   padding: 0 1.2rem;
   margin-right: 1.6rem;
-`;
-const AppendItemButton = styled.div`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-
-  span {
-    margin-left: 1rem;
-    color: var(--primary);
-    font-style: normal;
-    font-weight: 600;
-    font-size: 1.4rem;
-    line-height: 2.4rem;
-  }
 `;
 
 const SubmitContainer = styled.div`

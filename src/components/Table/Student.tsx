@@ -1,8 +1,10 @@
 import React, { useCallback } from "react";
-import { useRecoilState } from "recoil";
-import { studentsTypes, studentsAtom } from "@recoil/studentsAtom";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { studentsTypes } from "@recoil/studentsRecoil";
 import styled from "styled-components";
 import { CgMoreO } from "react-icons/cg";
+import { useNavigate } from "react-router-dom";
+import { currentStudentAtom } from "@recoil/currentStudentInfo";
 
 const TR = styled.tr`
   padding: 3px;
@@ -21,42 +23,37 @@ const TD = styled.td`
   }
 `;
 
-interface PropsTypes {
-  studentId: string;
-  name: string;
-  school: string;
-  grade: number;
-  subject: string;
-}
-
-const Student = (props: PropsTypes) => {
-  const { studentId, name, school, grade, subject } = props;
-  const [students, setStudents] = useRecoilState<studentsTypes[]>(studentsAtom);
-
-  const deletStudent = useCallback(
-    (studentId: string) => {
-      setStudents(
-        students.filter(
-          (student: studentsTypes) => student.studentId !== studentId,
-        ),
-      );
-    },
-    [setStudents, students],
-  );
-
+const Student = (props: studentsTypes) => {
+  const { studentId, name, school, grade, subjects } = props;
+  const setCurrentStudent = useSetRecoilState(currentStudentAtom);
+  // const deletStudent = useCallback(
+  //   (studentId: string) => {
+  //     setStudents(
+  //       students.filter(
+  //         (student: studentsTypes) => student.studentId !== studentId,
+  //       ),
+  //     );
+  //   },
+  //   [setStudents, students],
+  // );
+  const navigation = useNavigate();
+  const goCurrentStudentDetail = useCallback(() => {
+    setCurrentStudent(props);
+    navigation(`/students/${studentId}`);
+  }, [navigation, props, setCurrentStudent, studentId]);
   return (
     <>
-      <TR>
+      <TR onClick={goCurrentStudentDetail}>
         <TD>{name}</TD>
         <TD>{school}</TD>
         <TD>{grade}학년</TD>
-        <TD>{subject}</TD>
+        <TD>{subjects}</TD>
         <TD>
           <CgMoreO
             className="logo"
             size={22}
             color="#696969"
-            onClick={() => deletStudent(studentId)}
+            onClick={() => null}
           />
         </TD>
       </TR>

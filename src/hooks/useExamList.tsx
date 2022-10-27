@@ -16,8 +16,21 @@ function useExamList(year: string) {
 
   const [result, setResult] = useState<examProps[]>([]);
 
-  const { data } = useSWR(`/api/exams/${year}`, () =>
-    loadExamListFetcher(year, accessToken),
+  const { data } = useSWR(
+    `/api/exams/${year}`,
+    () => loadExamListFetcher(year, accessToken),
+    {
+      onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+        // 404에서 재시도 안함
+        if (error.status === 404) return;
+
+        // 10번까지만 재시도함
+        if (retryCount >= 10) return undefined;
+
+        // 2초 후에 재시도
+        setTimeout(() => revalidate({ retryCount }), 2000);
+      },
+    },
   );
 
   useEffect(() => {

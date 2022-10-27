@@ -1,16 +1,16 @@
 import { atom } from "recoil";
 
 export interface appendStudentInfoProps {
-  email: string;
+  name: string;
   school: string;
-  grade: number;
+  schoolYear: number;
   subjects: string;
 }
 
 export const initialStudentInfo = {
-  email: "",
+  name: "",
   school: "",
-  grade: -1,
+  schoolYear: -1,
   subjects: "",
 };
 

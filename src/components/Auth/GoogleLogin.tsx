@@ -5,7 +5,6 @@ import { ReactComponent as GoogleLogo } from "@images/google_signin_buttons/web/
 
 function GoogleLoginButton() {
   const onSuccessHandler = (response: any) => {
-    console.log(response);
     const params = new URLSearchParams();
     params.append("idToken", response.tokenObj.id_token);
 
@@ -23,7 +22,6 @@ function GoogleLoginButton() {
 
   const onFailureHandler = (response: any) => {
     return;
-    console.log(response);
   };
 
   return (

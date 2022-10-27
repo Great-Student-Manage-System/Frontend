@@ -77,7 +77,7 @@ function Header() {
             </Link>
           </Left>
           <Right>
-            <Link href="/mypage">
+            <Link href="/mypage/account">
               <VscAccount size={22} color="#696969" />
             </Link>
             <Link href="/">

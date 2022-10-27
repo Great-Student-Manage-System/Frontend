@@ -4,10 +4,11 @@ import Students from "@pages/Student/Students";
 import StudentDetail from "@pages/Student/StudentDetail";
 import Exams from "@pages/Exam/Exams";
 import ExamDetail from "@pages/Exam/ExamDetail";
-import Mypage from "@pages/Mypage";
 import Login from "@pages/Auth/Login";
 import Signup from "@pages/Auth/Signup";
 import { getLocalStorageValue } from "@utility/storage";
+import Account from "@pages/Mypage/Account";
+import Profile from "@pages/Mypage/Profile";
 
 function URLRoutes() {
   return (
@@ -56,10 +57,20 @@ function URLRoutes() {
           }
         />
         <Route
-          path="/mypage"
+          path="/mypage/account"
           element={
             getLocalStorageValue("token") ? (
-              <Mypage />
+              <Account />
+            ) : (
+              <Navigate replace to={"/auth/login"} />
+            )
+          }
+        />
+        <Route
+          path="/mypage/profile"
+          element={
+            getLocalStorageValue("token") ? (
+              <Profile />
             ) : (
               <Navigate replace to={"/auth/login"} />
             )

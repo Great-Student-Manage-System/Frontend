@@ -2,8 +2,9 @@ import {
   appendStudentAtom,
   appendStudentInfoProps,
 } from "@recoil/appendStudentAtom";
+import { myInfoAtom } from "@recoil/myInfoatom";
 import { useState, useEffect } from "react";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 interface AppendInfo {
@@ -33,8 +34,8 @@ function AppendStudentInfo({ studentInfo, order }: AppendInfo) {
       <div>
         <StudentInfoLabel>이름</StudentInfoLabel>
         <StudentInfoInput
-          onChange={(e) => handleOnChange(e, "email")}
-          value={infoObject.email}
+          onChange={(e) => handleOnChange(e, "name")}
+          value={infoObject.name}
           placeholder="학생이름"
           required={true}
         />
@@ -51,7 +52,7 @@ function AppendStudentInfo({ studentInfo, order }: AppendInfo) {
       <div>
         <StudentInfoLabel>학년</StudentInfoLabel>
         <StudentInfoSelect
-          onChange={(e) => handleOnChange(e, "grade")}
+          onChange={(e) => handleOnChange(e, "schoolYear")}
           required={true}
         >
           <option hidden={true}>학년 </option>

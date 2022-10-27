@@ -1,10 +1,11 @@
 import { currentModal } from "@data/currentModalState";
 import { modalState } from "@recoil/atom";
-import { useMemo, useEffect } from "react";
+import { useMemo } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import AppendRecordModal from "./AppendRecordModal";
 import AppendStudentModal from "./AppendStudentModal";
+import ModifyRecordModal from "./ModiftRecordModal";
 
 function Modal() {
   // children에 값을 전달하는게 아니라 modal Data에 맞게
@@ -25,20 +26,18 @@ function Modal() {
   // }, []);
 
   const currentModalState = useRecoilValue<currentModal>(modalState);
-  const modalElement = useMemo(
-    () => (
-      <>
-        {currentModalState === currentModal.APPEND_STUDENT ? (
-          <AppendStudentModal />
-        ) : currentModalState === currentModal.APPEND_RECORD ? (
-          <AppendRecordModal />
-        ) : (
-          <></>
-        )}
-      </>
-    ),
-    [currentModalState],
-  );
+  const modalElement = useMemo(() => {
+    switch (currentModalState) {
+      case currentModal.APPEND_STUDENT:
+        return <AppendStudentModal />;
+      case currentModal.APPEND_RECORD:
+        return <AppendRecordModal />;
+      case currentModal.MODIFY_RECORD:
+        return <ModifyRecordModal />;
+      default:
+        <></>;
+    }
+  }, [currentModalState]);
   return (
     <ModalContainer>
       {modalElement}

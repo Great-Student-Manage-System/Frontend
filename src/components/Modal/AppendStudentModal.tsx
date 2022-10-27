@@ -21,9 +21,10 @@ function AppendStudentModal() {
     [initialValue],
   );
 
-  const appendStuedntSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const appendStuedntSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(initialValue);
+    for (const [_, value] of Object.entries(initialValue)) {
+    }
     setInitialValue({ [Date.now()]: initialStudentInfo });
   };
 

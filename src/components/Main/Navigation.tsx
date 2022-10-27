@@ -46,16 +46,37 @@ export default function Navigation() {
   const { pathname } = useLocation();
 
   return (
-    <Nav>
-      <List>
-        <Now>성적관리</Now>
-        <Menu to="/students" isActive={pathname === "/students"}>
-          학생
-        </Menu>
-        <Menu to="/exams" isActive={pathname === "/exams"}>
-          시험
-        </Menu>
-      </List>
-    </Nav>
+    <>
+      <Nav
+        hidden={
+          pathname === "/mypage/account" || pathname === "/mypage/profile"
+        }
+      >
+        <List>
+          <Now>성적관리</Now>
+          <Menu to="/students" isActive={pathname === "/students"}>
+            학생
+          </Menu>
+          <Menu to="/exams" isActive={pathname === "/exams"}>
+            시험
+          </Menu>
+        </List>
+      </Nav>
+      <Nav
+        hidden={
+          pathname === "/students" || pathname === "/exams" || pathname === "/"
+        }
+      >
+        <List>
+          <Now>마이페이지</Now>
+          <Menu to="/mypage/account" isActive={pathname === "/mypage/account"}>
+            계정
+          </Menu>
+          <Menu to="/mypage/profile" isActive={pathname === "/mypage/profile"}>
+            프로필
+          </Menu>
+        </List>
+      </Nav>
+    </>
   );
 }
