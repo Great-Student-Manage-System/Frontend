@@ -27,12 +27,11 @@ function ModifyRecordModal() {
     e.preventDefault();
     const props = {
       accessToken,
-      examScore,
+      examResult: examScore,
       recordId,
       examId,
       studentId,
     };
-    console.log(examScore, recordId, studentId, examId, subject, year);
     const data = await modifyStudentRecordFetcher(props);
     if (data && data.code >= 200) {
       alert(data.response);

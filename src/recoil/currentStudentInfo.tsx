@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { atom } from "recoil";
-import { studentsTypes } from "./studentsRecoil";
+import { studentsTypes } from "@recoil/studentsRecoil";
 
 export const currentStudentAtom = atom<studentsTypes>({
   key: "curentStudent",
