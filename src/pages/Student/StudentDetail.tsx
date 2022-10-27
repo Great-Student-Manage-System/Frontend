@@ -11,14 +11,12 @@ import {
   currentStudentInfoAtom,
 } from "@recoil/currentStudentInfo";
 import AuthLayout from "@components/layouts/AuthLayout";
-import useExamList, { examProps } from "@hooks/useExamList";
+import useExamList from "@hooks/useExamList";
 import dayjs from "dayjs";
-import useStudentRecord, { studentRecordProps } from "@hooks/useStudentRecord";
+import useStudentRecord from "@hooks/useStudentRecord";
 import { modalState, openModalAtom } from "@recoil/atom";
 import { ReactComponent as AppendNormal } from "@images/Icon/append_normal_icon.svg";
 import { currentModal } from "@data/currentModalState";
-import { getLocalStorageValue } from "@utility/storage";
-import { loadExamListFetcher, loadStudentDetailFetcher } from "@apis/api";
 
 export interface StudentExamProps extends ObjectType {
   name: string;
@@ -35,7 +33,6 @@ const STUDENT_COLUMNS = [
 ];
 
 export default function StudentDetail() {
-  const accessToken = getLocalStorageValue("token") || "";
   const setModalOpen = useSetRecoilState(openModalAtom);
   const setModalState = useSetRecoilState(modalState);
   const { studentId, name, school, grade, subjects } =
@@ -45,9 +42,6 @@ export default function StudentDetail() {
   );
 
   const [serachExamWord, setSearchExamWord] = useState("");
-
-  // const [studentRecord, setStundentRecord] = useState<studentRecordProps[]>([]);
-  // const [examList, setExamList] = useState<examProps[]>([]);
 
   const navigate = useNavigate();
 
@@ -63,35 +57,7 @@ export default function StudentDetail() {
       subject: subjects.split(",")[0],
       year: dayjs().format("YYYY"),
     });
-    // getStudentRecord();
-    // getExamRecord();
   }, []);
-
-  // const getStudentRecord = useCallback(async () => {
-  //   const obj = {
-  //     studentId,
-  //     subject: subject === "" ? subjects.split(",")[0] : subject,
-  //     year,
-  //     accessToken,
-  //   };
-  //   const data = await loadStudentDetailFetcher(obj);
-  //   if (data && data.code === 200) {
-  //     const { data: studentRecord } = data;
-  //     return setStundentRecord(studentRecord);
-  //   } else if (data.code >= 400) {
-  //     navigate("/students");
-  //   } else setStundentRecord([]);
-  // }, [accessToken, navigate, studentId, subject, subjects, year]);
-
-  // const getExamRecord = useCallback(async () => {
-  //   const data = await loadExamListFetcher(year, accessToken);
-  //   if (data && data.code === 200) {
-  //     const { data: examList } = data;
-  //     setExamList(examList.data);
-  //   } else {
-  //     setExamList([]);
-  //   }
-  // }, [accessToken, year]);
 
   const recordData = useMemo(() => {
     if (studentRecord.length === 0 || examList.length === 0) return null;
