@@ -65,7 +65,7 @@ let tempData: StudentExamProps[] = [
 
 const STUDENT_COLUMNS = [
   ["examName", "시험"],
-  ["date", "날짜"],
+  ["examDate", "날짜"],
   ["score", "점수"],
 ];
 
@@ -135,7 +135,11 @@ export default function StudentDetail() {
     for (const exam of examList) {
       const data = studentRecord.find((rec) => rec.examId === exam.examId);
       if (data) {
-        record.push({ ...data, ...exam });
+        record.push({
+          ...data,
+          ...exam,
+          examDate: exam.examDate.split("-").slice(1).join("-"),
+        });
       }
     }
     return record;

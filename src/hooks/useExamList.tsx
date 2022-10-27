@@ -8,6 +8,7 @@ export interface examProps {
   examName: string;
   schoolYear: number;
   subject: string;
+  examDate: string;
 }
 
 function useExamList(year: string) {

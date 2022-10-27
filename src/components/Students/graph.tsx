@@ -1,4 +1,6 @@
-import React from "react";
+import { examProps } from "@hooks/useExamList";
+import { studentRecordProps } from "@hooks/useStudentRecord";
+import React, { useMemo, useCallback } from "react";
 import {
   LineChart,
   Line,
@@ -8,12 +10,32 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
+import styled from "styled-components";
 
-interface GraphProps<T> {
+interface temp extends studentRecordProps, examProps {}
+
+interface GraphProps<T extends temp> {
   data: T[];
 }
 
-function Graph<T>({ data }: GraphProps<T>) {
+function Graph<T extends temp>({ data }: GraphProps<T>) {
+  console.log(data);
+
+  const CustomTooltip = useCallback(({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      const { payload: examInfo } = payload[0];
+      return (
+        <ToolTipBackGround>
+          <p>{`${examInfo.examName}`}</p>
+          <p>{`과목: ${examInfo.subject}`}</p>
+          <p>{`점수: ${examInfo.score}`}</p>
+        </ToolTipBackGround>
+      );
+    }
+
+    return null;
+  }, []);
+
   return (
     <div style={{ marginTop: "10px" }}>
       <LineChart
@@ -28,14 +50,23 @@ function Graph<T>({ data }: GraphProps<T>) {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="date" />
+        <XAxis dataKey="examDate" />
         <YAxis />
-        <Tooltip />
+        <Tooltip
+          payload={[
+            ...data.map((ele) => ({
+              name: ele.examName,
+              value: ele.score,
+              unit: "점",
+            })),
+          ]}
+          content={<CustomTooltip />}
+        />
         <Legend />
         <Line
           type="monotone"
           dataKey="score"
-          stroke="#8884d8"
+          stroke={"#319CEA"}
           activeDot={{ r: 8 }}
         />
         <Line type="monotone" dataKey="grade" stroke="#82ca9d" />
@@ -45,3 +76,9 @@ function Graph<T>({ data }: GraphProps<T>) {
 }
 
 export default Graph;
+
+const ToolTipBackGround = styled.div`
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 1rem;
+  outline: none;
+`;

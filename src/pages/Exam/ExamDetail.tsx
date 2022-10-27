@@ -51,7 +51,7 @@ const EXAM_COLUMNS = [
   ["name", "이름"],
   ["school", "학교"],
   ["schoolYear", "학년"],
-  ["score", "점수"],
+  [],
   ["score", "점수"],
 ];
 export default function ExamDetail() {
@@ -60,7 +60,8 @@ export default function ExamDetail() {
   const navigate = useNavigate();
 
   const graph = useMemo(() => {
-    return <Graph data={tempData} />;
+    return null;
+    // return <Graph data={tempData} />;
   }, [tempData]);
 
   const table = useMemo(() => {

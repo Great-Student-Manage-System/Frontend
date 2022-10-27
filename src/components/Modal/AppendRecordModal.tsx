@@ -38,7 +38,12 @@ function AppendRecordModal() {
       examScore: Number(examScore),
     };
     const data = await appendStudentRecordFetcher(props);
-    console.log(data);
+    if (data.code === 400) {
+      alert(data.message);
+    } else if (data.code === 201) {
+      alert(data.response);
+    }
+    setOpenModal(false);
   };
 
   const handleOnChange = (
