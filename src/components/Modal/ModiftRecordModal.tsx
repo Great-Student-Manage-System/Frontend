@@ -16,7 +16,7 @@ function ModifyRecordModal() {
     { recordId, examId, examScore, studentId, schoolYear },
     setModifyRecordInfo,
   ] = useRecoilState(modifyExamRecordAtom);
-
+  console.log(recordId, examId, studentId);
   const setOpenModal = useSetRecoilState<boolean>(openModalAtom);
 
   const { subject, year } = useRecoilValue(currentStudentInfoAtom);
@@ -32,10 +32,11 @@ function ModifyRecordModal() {
       examId,
       studentId,
     };
+    console.log(examScore, recordId, studentId, examId, subject, year);
     const data = await modifyStudentRecordFetcher(props);
     if (data && data.code >= 200) {
       alert(data.response);
-      mutate(`/api/exams/${year}`);
+      mutate(`/api/students/${studentId}/${subject}/${year}`);
     } else if (data && data.code >= 400) {
       alert(data.response);
     }

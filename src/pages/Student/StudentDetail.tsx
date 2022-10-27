@@ -50,6 +50,7 @@ export default function StudentDetail() {
     subject: subject === "" ? subjects.split(",")[0] : subject,
     year,
   });
+  console.log(studentRecord);
   const { result: examList } = useExamList(year);
 
   useEffect(() => {

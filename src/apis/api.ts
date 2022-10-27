@@ -189,7 +189,6 @@ export function modifyStudentRecordFetcher(props: modifyStudentRecordProps) {
       },
       credentials: "include",
       body: JSON.stringify({
-        studentId,
         examId,
         recordId,
         examScore,
