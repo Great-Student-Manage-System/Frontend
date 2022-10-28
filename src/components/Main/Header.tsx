@@ -1,10 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { VscAccount } from "react-icons/vsc";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ReactComponent as LogoImg } from "@images/logo-type.svg";
 import { loginStateAtom } from "@recoil/atom";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
+import { removeLocalStorage } from "@utility/storage";
 
 interface signButtonProps {
   isPrimaryBg: boolean;
@@ -69,7 +70,14 @@ const Sign = styled.button<signButtonProps>`
 
 function Header() {
   const location = useLocation();
-  const loginState = useRecoilValue(loginStateAtom);
+  const [loginState, setLoginState] = useRecoilState(loginStateAtom);
+  const navigation = useNavigate();
+  const logoutHandler = () => {
+    setLoginState(false);
+    removeLocalStorage("token");
+    navigation("/");
+  };
+
   return location.pathname.includes("auth") ? null : loginState ? (
     <>
       {/* 로그인 됐을때 */}
@@ -86,9 +94,10 @@ function Header() {
             <Link to="/mypage/account">
               <VscAccount size={22} color="#696969" />
             </Link>
-            <Link to="/">
-              <Sign isPrimaryBg={false}>로그아웃</Sign>
-            </Link>
+
+            <Sign isPrimaryBg={false} onClick={logoutHandler}>
+              로그아웃
+            </Sign>
           </Right>
         </List>
       </Base>

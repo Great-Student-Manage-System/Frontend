@@ -1,4 +1,4 @@
-import { setLocalStorage } from "@utility/storage";
+import { removeLocalStorage, setLocalStorage } from "@utility/storage";
 import { refreshAccessToken } from "./api";
 
 export function authHandle(promise: Promise<Response>, accessToken: string) {
@@ -14,6 +14,11 @@ export function authHandle(promise: Promise<Response>, accessToken: string) {
           const token = accessToken.split(" ")[1];
           setLocalStorage("token", token);
           // return new Promise((resolve) => resolve({ code: 204 }));
+        } else if (data.code === 401) {
+          alert(data.message + "토큰을 초기화 합니다.");
+          removeLocalStorage("token");
+        } else if (data.code === 400) {
+          return response.json();
         } else throw new Error(data.messgae);
       } else {
         return {

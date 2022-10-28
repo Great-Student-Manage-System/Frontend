@@ -19,8 +19,6 @@ interface GraphProps<T> {
 }
 
 function Graph<T>({ data }: GraphProps<T>) {
-  console.log(data);
-
   const CustomTooltip = useCallback(({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       const { payload: examInfo } = payload[0];

@@ -15,7 +15,7 @@ function AuthLayout({ children }: PropsWithChildren) {
     if (accessToken === null) {
       setLoginState(false);
       removeLocalStorage("token");
-      alert("유효하지 않은 토큰 정보입니다.\n로그인페이지로 이동합니다.");
+      alert("토큰이 존재하지 않습니다.\n로그인페이지로 이동합니다.");
       navigation("/auth/login");
     }
   }, [accessToken]);
