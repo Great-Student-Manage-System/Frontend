@@ -1,8 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 import { VscAccount } from "react-icons/vsc";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { ReactComponent as LogoImg } from "@images/logo-type.svg";
+import { loginStateAtom } from "@recoil/atom";
+import { useRecoilValue } from "recoil";
+
+interface signButtonProps {
+  isPrimaryBg: boolean;
+}
 
 const Base = styled.div`
   width: 100%;
@@ -38,10 +44,6 @@ const Right = styled.li`
   margin: 0 0 0 auto;
 `;
 
-const Link = styled.a`
-  text-decoration: none;
-`;
-
 const Logo = styled.button`
   font-size: 18px;
   cursor: pointer;
@@ -49,58 +51,66 @@ const Logo = styled.button`
   background: none;
 `;
 
-const Sign = styled.button`
+const Sign = styled.button<signButtonProps>`
   border-radius: 6px;
   font-weight: 1000;
   box-sizing: border-box;
   min-width: 60px;
   height: 30px;
-  background: #319cea;
-  color: rgb(255, 255, 255);
+
+  background: ${(props) => (props.isPrimaryBg ? "#FFFFFF" : "#319CEA")};
+  color: ${(props) => (props.isPrimaryBg ? "#319CEA" : "#FFFFFF")};
+
   font-size: 12px;
-  border: none;
+  border: ${(props) => (props.isPrimaryBg ? "1.5px solid #319CEA" : "none")};
   cursor: pointer;
   margin: 10px 5px 10px 15px;
 `;
 
 function Header() {
   const location = useLocation();
-
-  return location.pathname.includes("auth") ? null : (
+  const loginState = useRecoilValue(loginStateAtom);
+  return location.pathname.includes("auth") ? null : loginState ? (
     <>
       {/* 로그인 됐을때 */}
       <Base>
         <List>
           <Left>
-            <Link href="/">
+            <Link to="/">
               <Logo>
                 <LogoImg />
               </Logo>
             </Link>
           </Left>
           <Right>
-            <Link href="/mypage/account">
+            <Link to="/mypage/account">
               <VscAccount size={22} color="#696969" />
             </Link>
-            <Link href="/">
-              <Sign>로그아웃</Sign>
+            <Link to="/">
+              <Sign isPrimaryBg={false}>로그아웃</Sign>
             </Link>
           </Right>
         </List>
       </Base>
+    </>
+  ) : (
+    <>
       {/* 로그인 안됐을때 */}
       <Base>
         <List>
           <Left>
-            <Link href="/">
+            <Link to="/">
               <Logo>
                 <LogoImg />
               </Logo>
             </Link>
           </Left>
           <Right hidden>
-            <Link href="/auth/login">
-              <Sign>로그인</Sign>
+            <Link to="/auth/login">
+              <Sign isPrimaryBg={true}>로그인</Sign>
+            </Link>
+            <Link to="/auth/signup">
+              <Sign isPrimaryBg={false}>회원가입</Sign>
             </Link>
           </Right>
         </List>

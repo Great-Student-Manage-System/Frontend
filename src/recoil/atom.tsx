@@ -10,3 +10,8 @@ export const modalState = atom<currentModal>({
   key: "currentModalPage",
   default: currentModal.NONE,
 });
+
+export const loginStateAtom = atom({
+  key: "loginState",
+  default: false,
+});

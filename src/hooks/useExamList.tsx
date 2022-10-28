@@ -2,6 +2,8 @@ import { loadExamListFetcher } from "@apis/api";
 import { getLocalStorageValue } from "@utility/storage";
 import useSWR from "swr";
 import { useState, useEffect } from "react";
+import { useSetRecoilState } from "recoil";
+import { loginStateAtom } from "@recoil/atom";
 
 export interface examProps {
   examId: number;
@@ -15,7 +17,7 @@ function useExamList(year: string) {
   const accessToken = getLocalStorageValue("token") || "";
 
   const [result, setResult] = useState<examProps[]>([]);
-
+  const setLoginState = useSetRecoilState(loginStateAtom);
   const { data } = useSWR(
     `/api/exams/${year}`,
     () => loadExamListFetcher(year, accessToken),
@@ -30,6 +32,7 @@ function useExamList(year: string) {
         // 2초 후에 재시도
         setTimeout(() => revalidate({ retryCount }), 2000);
       },
+      onSuccess: () => setLoginState(true),
     },
   );
 

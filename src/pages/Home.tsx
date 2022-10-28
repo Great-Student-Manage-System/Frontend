@@ -3,6 +3,9 @@ import Header from "@components/Main/Header";
 import styled from "styled-components";
 import { ReactComponent as MainImg } from "@images/main.svg";
 import { ReactComponent as MainText } from "@images/mainText.svg";
+import { useRecoilValue } from "recoil";
+import { loginStateAtom } from "@recoil/atom";
+import { Link } from "react-router-dom";
 
 const Wrapper = styled.div`
   display: block;
@@ -19,9 +22,7 @@ const Wrapper = styled.div`
     margin-top: -10px;
   }
 `;
-const Link = styled.a`
-  text-decoration: none;
-`;
+
 const Button = styled.button`
   position: relative;
   border-radius: 30px;
@@ -38,6 +39,8 @@ const Button = styled.button`
 `;
 
 export default function Home() {
+  const loginState = useRecoilValue(loginStateAtom);
+
   return (
     <div>
       <Header />
@@ -46,7 +49,7 @@ export default function Home() {
         <MainText className="text" />
         {/* 로그인 됐을경우 버튼을 누르면 students페이지로 이동
         안됐을 경우 로그인 페이지로 이동 */}
-        <Link href="/auth/login">
+        <Link to={loginState ? "/students" : "/auth/login"}>
           <Button>지금 시작하기</Button>
         </Link>
       </Wrapper>

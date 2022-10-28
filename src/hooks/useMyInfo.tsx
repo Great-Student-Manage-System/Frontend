@@ -1,9 +1,12 @@
 import { loadMyInfoFetcher } from "@apis/api";
 import useSWR from "swr";
 import { getLocalStorageValue } from "@utility/storage";
+import { useSetRecoilState } from "recoil";
+import { loginStateAtom } from "@recoil/atom";
 
 function useMyInfo() {
   const accessToken = getLocalStorageValue("token") || "";
+  const setLoginState = useSetRecoilState(loginStateAtom);
 
   const { data: myInfo, error } = useSWR(
     "/api/members/myInfo",
@@ -19,6 +22,7 @@ function useMyInfo() {
         // 5초 후에 재시도
         setTimeout(() => revalidate({ retryCount }), 5000);
       },
+      onSuccess: () => setLoginState(true),
     },
   );
 

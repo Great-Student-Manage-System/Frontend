@@ -2,11 +2,13 @@ import { loginFetcher } from "@apis/api";
 import GoogleLoginButton from "@components/Auth/GoogleLogin";
 import Header from "@components/Auth/Header";
 import KaKaoLogin, { LoginWayButton } from "@components/Auth/KaKaoLogin";
+import { loginStateAtom } from "@recoil/atom";
 import { setLocalStorage } from "@utility/storage";
 import { emailValidation, passwordValidation } from "@utility/validation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { AuthForm } from "./Signup";
 
@@ -22,6 +24,8 @@ interface validationProps {
 
 export default function Login() {
   const { register, handleSubmit } = useForm();
+  const setLoginState = useSetRecoilState(loginStateAtom);
+
   const [isEmailLogin, setIsEmailLogin] = useState(false);
   const navigation = useNavigate();
 
@@ -37,19 +41,20 @@ export default function Login() {
     validate(validationFunc(value));
   };
 
-  const loginSubmitHandler = (data: formProps) => {
-    loginFetcher({ email: data["email"], password: data["password"] })
-      .then((data) => {
-        if (data.code === 200) {
-          const { accessToken } = data.data;
-          const token = accessToken.split(" ")[1];
-          setLocalStorage("token", token);
-          navigation("/students");
-        } else {
-          alert(data.message);
-        }
-      })
-      .catch((error) => console.log(error));
+  const loginSubmitHandler = async (data: formProps) => {
+    const loginInfo = await loginFetcher({
+      email: data["email"],
+      password: data["password"],
+    });
+    if (loginInfo.code === 200) {
+      const { accessToken } = loginInfo.data;
+      const token = accessToken.split(" ")[1];
+      setLoginState(true);
+      setLocalStorage("token", token);
+      navigation("/students");
+    } else {
+      alert(loginInfo.message);
+    }
   };
 
   return (
