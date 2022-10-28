@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { VscAccount } from "react-icons/vsc";
 import { useLocation } from "react-router-dom";
+import { ReactComponent as LogoImg } from "@images/logo-type.svg";
 
 const Base = styled.div`
   width: 100%;
@@ -65,15 +66,16 @@ const Sign = styled.button`
 function Header() {
   const location = useLocation();
 
-  console.log();
-
   return location.pathname.includes("auth") ? null : (
     <>
+      {/* 로그인 됐을때 */}
       <Base>
         <List>
           <Left>
             <Link href="/">
-              <Logo>grea+</Logo>
+              <Logo>
+                <LogoImg />
+              </Logo>
             </Link>
           </Left>
           <Right>
@@ -82,6 +84,23 @@ function Header() {
             </Link>
             <Link href="/">
               <Sign>로그아웃</Sign>
+            </Link>
+          </Right>
+        </List>
+      </Base>
+      {/* 로그인 안됐을때 */}
+      <Base>
+        <List>
+          <Left>
+            <Link href="/">
+              <Logo>
+                <LogoImg />
+              </Logo>
+            </Link>
+          </Left>
+          <Right hidden>
+            <Link href="/auth/login">
+              <Sign>로그인</Sign>
             </Link>
           </Right>
         </List>

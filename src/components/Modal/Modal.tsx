@@ -4,6 +4,7 @@ import { useMemo, useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import AppendStudentModal from "./AppendStudentModal";
+import EditStudentModal from "./EditStudentModal";
 
 function Modal() {
   // children에 값을 전달하는게 아니라 modal Data에 맞게
@@ -29,6 +30,8 @@ function Modal() {
       <>
         {currentModalState === currentModal.APPEND_STUDENT ? (
           <AppendStudentModal />
+        ) : currentModalState === currentModal.EDIT_STUDENT ? (
+          <EditStudentModal />
         ) : currentModalState === currentModal.TEMP ? (
           <>temp</>
         ) : (

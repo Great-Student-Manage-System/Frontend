@@ -3,7 +3,9 @@ import styled from "styled-components";
 import { useLocation } from "react-router-dom";
 import { GrAdd } from "react-icons/gr";
 import { studentSelector } from "@recoil/studentsRecoil";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { modalState, openModalAtom } from "@recoil/atom";
+import { currentModal } from "@data/currentModalState";
 
 const FormWrapper = styled.div`
   width: 100%;
@@ -92,6 +94,8 @@ const Add = styled.button`
 export default function SearchForm() {
   const { pathname } = useLocation();
   const students = useRecoilValue(studentSelector);
+  const setOpenState = useSetRecoilState(openModalAtom);
+  const setModalState = useSetRecoilState(modalState);
 
   return (
     <>
@@ -119,7 +123,12 @@ export default function SearchForm() {
           </Select>
           <Input placeholder="학생 이름"></Input>
           <Search>검색</Search>
-          <Add>
+          <Add
+            onClick={() => {
+              setOpenState(true);
+              setModalState(currentModal.APPEND_STUDENT);
+            }}
+          >
             <GrAdd className="add" />
             학생추가하기
           </Add>

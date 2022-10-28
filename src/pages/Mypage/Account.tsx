@@ -2,6 +2,8 @@ import React from "react";
 import Header from "@components/Main/Header";
 import Navigation from "@components/Main/Navigation";
 import styled from "styled-components";
+import { myInfoSelector } from "@recoil/myInfoRecoil";
+import { useRecoilValue } from "recoil";
 
 const Wrapper = styled.div`
   position: relative;
@@ -49,6 +51,7 @@ const Button = styled.button`
 `;
 
 export default function Account() {
+  const myInfo = useRecoilValue(myInfoSelector);
   return (
     <div>
       <Header />
@@ -57,7 +60,7 @@ export default function Account() {
         <Title>계정 정보</Title>
         <IdList>
           <Email>이메일</Email>
-          <Email>dmstn@naver.com</Email>
+          <Email>{myInfo.email}</Email>
         </IdList>
         <PwdList>
           <Pwd>비밀번호</Pwd>

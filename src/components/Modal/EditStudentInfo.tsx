@@ -1,21 +1,18 @@
-import {
-  appendStudentAtom,
-  appendStudentInfoProps,
-} from "@recoil/appendStudentAtom";
+import { editStudentAtom, editStudentInfoProps } from "@recoil/editStudentAtom";
 import { useState, useEffect } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-interface AppendInfo {
-  studentInfo: appendStudentInfoProps;
+interface EditInfo {
+  studentInfo: editStudentInfoProps;
   order: string;
 }
 
-function AppendStudentInfo({ studentInfo, order }: AppendInfo) {
+function EditStudentInfo({ studentInfo, order }: EditInfo) {
   const [infoObject, setInfoObject] =
-    useState<appendStudentInfoProps>(studentInfo);
-  const setApendStudent = useSetRecoilState(appendStudentAtom);
-  const appendStudent = useRecoilValue(appendStudentAtom);
+    useState<editStudentInfoProps>(studentInfo);
+  const setApendStudent = useSetRecoilState(editStudentAtom);
+  const appendStudent = useRecoilValue(editStudentAtom);
 
   useEffect(() => {
     console.log(appendStudent);
@@ -77,7 +74,6 @@ function AppendStudentInfo({ studentInfo, order }: AppendInfo) {
     </StudentInfoWrapper>
   );
 }
-
 const StudentInfoWrapper = styled.div`
   display: flex;
 
@@ -129,4 +125,5 @@ const StudentInfoSelect = styled.select`
   padding: 0 1.2rem;
   margin-right: 1.6rem;
 `;
-export default AppendStudentInfo;
+
+export default EditStudentInfo;

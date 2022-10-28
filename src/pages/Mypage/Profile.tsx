@@ -1,7 +1,10 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import Header from "@components/Main/Header";
 import Navigation from "@components/Main/Navigation";
 import styled from "styled-components";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { myInfoSelector, inputState } from "@recoil/myInfoRecoil";
+import { getLocalStorageValue } from "@utility/storage";
 
 const Wrapper = styled.div`
   position: relative;
@@ -38,24 +41,15 @@ const SubList = styled.div`
   position: relative;
   display: block;
 `;
-const Select = styled.select`
+const Subject = styled.div`
   position: absolute;
   top: 45px;
+  font-size: 13px;
+  width: 200px;
   height: 30px;
-  text-align: center;
-  margin-right: 10px;
-  background-color: white;
-  font-size: 14px;
-  border: 1px solid grey;
-  border-radius: 5px;
-  padding: 0 8px;
-
-  option {
-    color: black;
-    background: white;
-    display: flex;
-    padding: 5px;
-  }
+  border-radius: 6px;
+  border: solid 1px #bdbdbd;
+  padding: 6px 8px;
 `;
 
 const Save = styled.button`
@@ -73,7 +67,36 @@ const Save = styled.button`
   cursor: pointer;
 `;
 
+function MyInfo(nickName: string) {
+  const BASE_URL = "https://great.robinjoon.xyz";
+  const accessToken = getLocalStorageValue("token") ?? "";
+
+  fetch(`${BASE_URL}/api/members/myinfo`, {
+    method: "PATCH",
+    headers: {
+      Authorization: accessToken,
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify({
+      nickName: nickName,
+    }),
+  })
+    .then((response) => response.json())
+    .then((result) => console.log(result));
+
+  console.log(nickName);
+}
+
 export default function Profile() {
+  const [nickName, setNickName] = useRecoilState<string>(inputState);
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setNickName(event.target.value);
+  };
+  const myInfo = useRecoilValue(myInfoSelector);
+  console.log(myInfo);
+
   return (
     <div>
       <Header />
@@ -82,20 +105,18 @@ export default function Profile() {
         <Title>프로필 정보</Title>
         <NameList>
           <Text>닉네임</Text>
-          <Name placeholder="봉천동불주먹" />
+          <Name
+            type="text"
+            placeholder={myInfo.nickName}
+            value={nickName}
+            onChange={onChange}
+          />
         </NameList>
         <SubList>
           <Text>담당과목</Text>
-          <Select>
-            <option>전체</option>
-            <option>국어</option>
-            <option>영어</option>
-            <option>수학</option>
-            <option>사회</option>
-            <option>과학</option>
-          </Select>
+          <Subject>{myInfo.subject}</Subject>
         </SubList>
-        <Save>변경내용 저장</Save>
+        <Save onClick={() => MyInfo(nickName)}>변경내용 저장</Save>
       </Wrapper>
     </div>
   );

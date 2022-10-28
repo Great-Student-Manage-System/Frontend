@@ -11,7 +11,7 @@ const StudentTable = styled.div`
   position: relative;
   top: 100px;
   margin-top: 20px;
-  width: 900px;
+  width: 1000px;
 `;
 
 const ExamTable = styled.div`
@@ -25,7 +25,7 @@ const TR = styled.tr`
   height: 100%
   padding: 3px;
   text-align: left;
-  width: 900px;
+  width: 1000px;
   height: 40px;
 `;
 
@@ -40,8 +40,6 @@ export default function Table() {
   const { pathname } = useLocation();
   const students = useRecoilValue(studentSelector);
   const exams = useRecoilValue(examSelector);
-  console.log(students);
-  console.log(exams);
   return (
     <>
       <StudentTable hidden={pathname === "/exams"}>
