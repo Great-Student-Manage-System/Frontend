@@ -11,6 +11,10 @@ import { useEffect } from "react";
 import { DETAIL_SUBJECTS, MAIN_SUBJECTS } from "@data/subjectData";
 import AuthLayout from "@components/layouts/AuthLayout";
 
+import Modal from "@components/Modal/Modal";
+import Overlay from "@components/Modal/Overlay";
+import AppendStudentModal from "@components/Modal/AppendStudentModal";
+
 export default function Students() {
   const { myInfo } = useMyInfo();
   const setMyInfo = useSetRecoilState(myInfoAtom);

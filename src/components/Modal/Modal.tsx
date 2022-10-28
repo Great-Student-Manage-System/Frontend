@@ -6,6 +6,7 @@ import styled from "styled-components";
 import AppendRecordModal from "./AppendRecordModal";
 import AppendStudentModal from "./AppendStudentModal";
 import ModifyRecordModal from "./ModiftRecordModal";
+import EditStudentModal from "./EditStudentModal";
 
 function Modal() {
   // children에 값을 전달하는게 아니라 modal Data에 맞게
@@ -34,10 +35,14 @@ function Modal() {
         return <AppendRecordModal />;
       case currentModal.MODIFY_RECORD:
         return <ModifyRecordModal />;
+      case currentModal.EDIT_STUDENT:
+        return <EditStudentModal />;
+
       default:
         <></>;
     }
   }, [currentModalState]);
+
   return (
     <ModalContainer>
       {modalElement}

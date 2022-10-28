@@ -94,7 +94,7 @@ const Add = styled.button`
 export default function SearchForm() {
   const { pathname } = useLocation();
   const students = useRecoilValue(studentSelector);
-  const setOpenModal = useSetRecoilState(openModalAtom);
+  const setOpenState = useSetRecoilState(openModalAtom);
   const setModalState = useSetRecoilState(modalState);
 
   return (
@@ -125,7 +125,7 @@ export default function SearchForm() {
           <Search>검색</Search>
           <Add
             onClick={() => {
-              setOpenModal(true);
+              setOpenState(true);
               setModalState(currentModal.APPEND_STUDENT);
             }}
           >

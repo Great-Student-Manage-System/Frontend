@@ -1,25 +1,24 @@
 import {
-  appendStudentAtom,
-  initialStudentInfo,
-} from "@recoil/appendStudentAtom";
+  editStudentAtom,
+  initialEditStudentInfo,
+} from "@recoil/editStudentAtom";
 import { openModalAtom } from "@recoil/atom";
 import { useMemo } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import AppendStudentInfo from "./AppendStudentInfo";
-import appendIcon from "@images/Icon/append_Icon.svg";
+import AppentStudentInfo from "./AppendStudentInfo";
 import { CgChevronDoubleLeft } from "react-icons/cg";
 import { getLocalStorageValue } from "@utility/storage";
 import { studentSelector } from "@recoil/studentsRecoil";
 
-function AppendStudentModal() {
-  const [initialValue, setInitialValue] = useRecoilState(appendStudentAtom);
+function EditStudentModal() {
+  const [initialValue, setInitialValue] = useRecoilState(editStudentAtom);
   const setOpenModal = useSetRecoilState<boolean>(openModalAtom);
 
   const studentInfoForm = useMemo(
     () =>
       Object.entries(initialValue).map(([key, value]) => (
-        <AppendStudentInfo studentInfo={value} order={key} />
+        <AppentStudentInfo studentInfo={value} order={key} />
       )),
     [initialValue],
   );
@@ -49,26 +48,13 @@ function AppendStudentModal() {
         .then((response) => setOpenModal((cur) => !cur))
         .then((result) => console.log(result));
     }
-    setInitialValue({ [Date.now()]: initialStudentInfo });
   };
 
   return (
     <StudentModalWrapper>
-      <StudentModalTitle>학생 추가하기</StudentModalTitle>
+      <StudentModalTitle>학생 수정하기</StudentModalTitle>
       <AppendForm onSubmit={appendStuedntSubmit}>
         {studentInfoForm}
-        <AppendItemButton
-          onClick={(e) => {
-            e.preventDefault();
-            setInitialValue((cur) => ({
-              ...cur,
-              [Date.now()]: initialStudentInfo,
-            }));
-          }}
-        >
-          <img src={appendIcon} alt="추가 이미지" />
-          <span>항목추가하기</span>
-        </AppendItemButton>
         <SubmitContainer>
           <SubmitCancelButton
             onClick={(e) => {
@@ -85,7 +71,7 @@ function AppendStudentModal() {
   );
 }
 
-export default AppendStudentModal;
+export default EditStudentModal;
 
 const StudentModalWrapper = styled.div`
   width: 75.7rem;
@@ -110,21 +96,6 @@ const StudentModalTitle = styled.p`
   /* secondary/black */
 
   color: #000000;
-`;
-
-const AppendItemButton = styled.div`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-
-  span {
-    margin-left: 1rem;
-    color: var(--primary);
-    font-style: normal;
-    font-weight: 600;
-    font-size: 1.4rem;
-    line-height: 2.4rem;
-  }
 `;
 
 const SubmitContainer = styled.div`

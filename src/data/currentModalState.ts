@@ -3,4 +3,6 @@ export enum currentModal {
   APPEND_STUDENT,
   APPEND_RECORD,
   MODIFY_RECORD,
+  TEMP,
+  EDIT_STUDENT,
 }
