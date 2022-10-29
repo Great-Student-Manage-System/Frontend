@@ -6,6 +6,7 @@ import Exam from "@components/Table/Exam";
 import { examSelector, examsTypes } from "@recoil/examsRecoil";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
+import useStudentList from "@hooks/useStudentList";
 
 const StudentTable = styled.div`
   position: relative;
@@ -38,8 +39,10 @@ const TH = styled.th`
 
 export default function Table() {
   const { pathname } = useLocation();
-  const students = useRecoilValue(studentSelector);
+  const { result: students } = useStudentList("1");
   const exams = useRecoilValue(examSelector);
+
+  console.log(students);
   return (
     <>
       <StudentTable hidden={pathname === "/exams"}>
@@ -50,7 +53,7 @@ export default function Table() {
           <TH>선택과목</TH>
           <TH />
         </TR>
-        {students
+        {students.maxPage
           ? students.data.map((student: studentsTypes) => {
               const { studentId, name, school, grade, subjects } = student;
               return (

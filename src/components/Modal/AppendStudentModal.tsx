@@ -11,10 +11,13 @@ import appendIcon from "@images/Icon/append_Icon.svg";
 import { CgChevronDoubleLeft } from "react-icons/cg";
 import { getLocalStorageValue } from "@utility/storage";
 import { studentSelector } from "@recoil/studentsRecoil";
+import { useSWRConfig } from "swr";
 
 function AppendStudentModal() {
   const [initialValue, setInitialValue] = useRecoilState(appendStudentAtom);
   const setOpenModal = useSetRecoilState<boolean>(openModalAtom);
+
+  const { mutate } = useSWRConfig();
 
   const studentInfoForm = useMemo(
     () =>
@@ -46,8 +49,13 @@ function AppendStudentModal() {
         }),
       })
         .then((response) => response.json())
-        .then((response) => setOpenModal((cur) => !cur))
-        .then((result) => console.log(result));
+        .then((result) => {
+          console.log(result);
+          if (result.code === 200) {
+            mutate(`/api/students/1`);
+          }
+        })
+        .then(() => setOpenModal((cur) => !cur));
     }
     setInitialValue({ [Date.now()]: initialStudentInfo });
   };
